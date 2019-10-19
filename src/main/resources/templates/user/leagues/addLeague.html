@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Index page</title>
+</head>
+<body>
+<h1>Adding new League</h1>
+
+<form action="#" th:action="@{/user/leagues/addLeagueProceed}"
+      th:object="${league}" method="POST">
+    <input type="text" th:field="*{name}" placeholder="League name">
+
+    <button type="submit">Add League</button>
+    <p><a th:href="@{/user/leagues/myLeagues}">back to My Leagues</a></p>
+
+</form>
+
+</body>
+</html>

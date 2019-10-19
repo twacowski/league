@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Index page</title>
+</head>
+<body>
+<h1>Edit player</h1>
+
+<form action="#" th:action="@{/user/players/editPlayerProceed}"
+      th:object="${player}" method="POST">
+    <input type="hidden" th:field="*{id}" />
+
+    <p><input type="number" th:field="*{number}" placeholder="-"></p>
+    <p><input type="text" th:field="*{name}" placeholder="Player name"></p>
+    <p><input type="text" th:field="*{surname}" placeholder="Player surname"></p>
+
+    <select th:field="*{team}">
+        <option th:value="0" text="">-----</option>
+        <option th:each="x : ${teams}" th:value="${x.id}" th:text="${x.name}"></option>
+    </select>
+
+    <p><button type="submit">Confirm</button></p>
+    <p><a th:href="@{/user/players/myPlayers}">back to My Players</a></p>
+
+</form>
+
+</body>
+</html>

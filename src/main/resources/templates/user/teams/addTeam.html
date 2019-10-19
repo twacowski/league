@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Index page</title>
+</head>
+<body>
+<h1>Adding Team</h1>
+
+<form action="#" th:action="@{/user/teams/addTeamProceed}"
+      th:object="${team}" method="POST">
+    <input type="text" th:field="*{name}" placeholder="Team name">
+    <select th:field="*{league}">
+        <option th:value="0" text="">-----</option>
+        <option th:each="league : ${leagues}" th:value="${league.id}" th:text="${league.name}"></option>
+    </select>
+
+    <button type="submit">Add Team</button>
+    <p><a th:href="@{/user/teams/myTeams}">back to My Teams</a></p>
+
+</form>
+
+</body>
+</html>

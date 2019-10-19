@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -31,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/index.html").permitAll()
-                .antMatchers("/user/index").authenticated()
+                .antMatchers("/user/**").authenticated()
                 .antMatchers("/admin/index").hasRole("ADMIN")
                 .and()
                 .formLogin()
@@ -43,4 +45,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     BCryptPasswordEncoder passwordEncoder() {
         return  new BCryptPasswordEncoder();
     }
+
 }

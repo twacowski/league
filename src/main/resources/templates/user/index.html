@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Index page</title>
 </head>
 <body>
-User panel page
+<h1>User page</h1>
+
+<p><a th:href="@{/user/leagues/myLeagues}">My Leagues</a></p>
+<p><a th:href="@{/user/teams/myTeams}">My Teams</a></p>
+<p><a th:href="@{/user/players/myPlayers}">My Players</a></p>
+
 </body>
 </html>

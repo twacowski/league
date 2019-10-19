@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Index page</title>
+</head>
+<body>
+<h1>My Players</h1><hr>
+
+<table border = "1">
+    <thead>
+        <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Team</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="player: ${players}">
+            <td th:text="${player.number}" />
+            <td th:text="${player.name}" />
+            <td th:text="${player.surname}" />
+            <td th:text="${player.team}" />
+            <td><a th:href="@{/user/players/editPlayer(playerId=${player.id})}">Edit Player</a>
+                <a th:href="@{/user/players/deletePlayer(playerId=${player.id})}"
+                onclick="if (!(confirm('Are you sure you want to delete this player?'))) return false">Delete Player</a></td>
+        </tr>
+    </tbody>
+
+</table>
+
+<p><a th:href="@{/user/players/addPlayer}">Add Player</a></p>
+<p><a th:href="@{/user/index}">back to User Panel</a></p>
+
+</body>
+</html>
