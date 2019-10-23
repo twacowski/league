@@ -43,8 +43,12 @@ public class LeagueController {
     public String manageLeague(@RequestParam("leagueId") int leagueId, Model model) {
         List<Team> teams = teamService.getLeagueTeams(leagueId);
         model.addAttribute("teams", teams);
-        model.addAttribute("league", leagueService.findById(leagueId));
-        return "user/leagues/manageLeague";
+        League league = leagueService.findById(leagueId);
+        model.addAttribute("league", league);
+        if(!league.isStarted()) {
+            return "user/leagues/manageLeague";
+        }
+        return "redirect:/user/leagues/manageActiveLeague?leagueId=" + leagueId;
     }
 
     @PostMapping("manageLeagueProceed")
@@ -54,9 +58,37 @@ public class LeagueController {
     }
 
     @GetMapping("deleteLeague")
-    public String deleteTeamProceed(@RequestParam("leagueId") int leagueId) {
+    public String deleteLeagueProceed(@RequestParam("leagueId") int leagueId) {
         leagueService.deleteLeague(leagueId);
         return "redirect:/user/leagues/myLeagues";
+    }
+
+    @GetMapping("startLeague")
+    public String startLeague(@RequestParam("leagueId") int leagueId, Model model) {
+        League league = leagueService.findById(leagueId);
+        if(league.isStarted() || league.numberOfTeams()<2) {
+            //TODO stworzyc endpoint dla tego erroru
+            return "redirect:/user/leagues/myLeagues";
+        }
+        model.addAttribute("league", league);
+        return "/user/leagues/startLeague";
+    }
+
+    @PostMapping("startLeagueProceed")
+    public String startLeagueProceed(@ModelAttribute("league") League league) {
+        League theLeague = leagueService.findById(league.getId());
+        theLeague.setStarted(league.isStarted());
+        theLeague.setRematch(league.isRematch());
+        leagueService.startLeague(theLeague);
+        return "redirect:/user/leagues/myLeagues";
+    }
+
+    @GetMapping("manageActiveLeague")
+    public String manageActiveTable(@RequestParam("leagueId") int leagueId, Model model) {
+        League league = leagueService.findById(leagueId);
+        model.addAttribute("league", league);
+        model.addAttribute("standings", leagueService.getStandings(league));
+        return "/user/leagues/manageActiveLeague";
     }
 
 }

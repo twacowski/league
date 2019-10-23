@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Index page</title>
+</head>
+<body align="center">
+<h1 th:text="${league.name}" />
+
+<table align="center" border = "1">
+    <thead>
+    <tr>
+        <th> </th>
+        <th> - Team Name - </th>
+        <th> Played </th>
+        <th> Wins </th>
+        <th> Draws </th>
+        <th> Loses </th>
+        <th> Scored </th>
+        <th> Conceded </th>
+        <th> +/- </th>
+        <th> Points </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="team: ${standings}" >
+        <td th:text="${standings.indexOf(team)+1}+." />
+        <td th:text="${team.name}" />
+        <td th:text="${team.numberOfMatches()}" />
+        <td th:text="${team.wins}" />
+        <td th:text="${team.draws}" />
+        <td th:text="${team.loses}" />
+        <td th:text="${team.scoredGoals}" />
+        <td th:text="${team.concededGoals}" />
+        <td th:text="${team.balance}" />
+        <td th:text="${team.points}" />
+    </tr>
+    </tbody>
+
+</table>
+
+<p><a th:href="@{/user/leagues/myLeagues}">Back to leagues</a></p>
+
+<br>
+<h2>Schedule:</h2>
+
+<table align="center" border = "0">
+    <tbody>
+    <tr th:each="gameweek: ${league.gameweeks}" >
+        <td>
+        <table align="center" border = "0">
+            <thead>
+            <tr>
+                <th> ---------- </th>
+                <td align="center" th:text="Gameweek +${gameweek.number}" />
+                <th> ---------- </th>
+            </tr>
+            </thead>
+        </table>
+
+        <table align="center" border = "0">
+            <tbody>
+            <tr th:each="match: ${gameweek.matches}" >
+                <td align="left" th:text="${match.date}" />
+                <td align="left" th:text="${match.time}" />
+                <td align="right" th:text="${match.host}"  />
+                <td align="center" th:text="${match.hostScore}" />
+                <td> : </td>
+                <td align="center" th:text="${match.guestScore}" />
+                <td align="left" th:text="${match.guest}" />
+                <td><a th:href="@{/user/matches/matchDetails(matchId=${match.id})}">Match details</a></td>
+            </tr>
+            </tbody>
+
+        </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

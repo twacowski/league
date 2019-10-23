@@ -1,6 +1,7 @@
 package com.league.service.league;
 
 import com.league.model.League;
+import com.league.model.Team;
 
 import java.util.List;
 
@@ -9,4 +10,6 @@ public interface LeagueService {
     void deleteLeague(int leagueId);
     League findById(int id);
     List<League> getUserLeagues();
+    void startLeague(League league);
+    List<Team> getStandings(League league);
 }

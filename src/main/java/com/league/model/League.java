@@ -12,6 +12,7 @@ public class League {
     private int id;
     private String name;
     private boolean isStarted;
+    private boolean rematch;
 
     @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -22,6 +23,14 @@ public class League {
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Team> teams;
 
+    @OneToMany(mappedBy="league", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Gameweek> gameweeks;
+
+    @OneToMany(mappedBy="league", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Match> matches;
+
     public User getUser() {
         return user;
     }
@@ -30,7 +39,7 @@ public class League {
         this.user = user;
     }
 
-    /*private int matches; //do zmiany
+    /*
     private int table; //do zmiany
     private int goalscorers; // do zmiany*/
 
@@ -58,6 +67,30 @@ public class League {
         isStarted = started;
     }
 
+    public boolean isRematch() {
+        return rematch;
+    }
+
+    public void setRematch(boolean rematch) {
+        this.rematch = rematch;
+    }
+
+    public List<Gameweek> getGameweeks() {
+        return gameweeks;
+    }
+
+    public void setGameweeks(List<Gameweek> gameweeks) {
+        this.gameweeks = gameweeks;
+    }
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
+    }
+
     public List<Team> getTeams() {
         return teams;
     }
@@ -69,5 +102,9 @@ public class League {
     @Override
     public String toString() {
         return name;
+    }
+
+    public int numberOfTeams() {
+        return teams.size();
     }
 }

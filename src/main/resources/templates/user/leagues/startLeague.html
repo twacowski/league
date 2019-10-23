@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Index page</title>
+</head>
+<body>
+<h1>Starting League</h1>
+
+<form action="#" th:action="@{/user/leagues/startLeagueProceed}"
+      th:object="${league}" method="POST">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{teams}">
+    <input type="text" th:field="*{name}" placeholder="League name">
+    <br>Rematch: <select th:field="*{rematch}">
+        <option th:value="false" text="No">No</option>
+        <option th:value="true" text="Yes">Yes</option>
+    </select>
+    <br><button type="submit">Start the League!</button>
+
+    <p><a th:href="@{/user/leagues/myLeagues}">back to My Leagues</a></p>
+
+</form>
+
+</body>
+</html>

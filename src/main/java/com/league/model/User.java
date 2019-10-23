@@ -29,6 +29,18 @@ public class User {
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Player> players;
 
+    @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Gameweek> gameweeks;
+
+    @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Match> matches;
+
+    @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<ScoreSheet> scoresheets;
+
     public int getId() {
         return id;
     }
@@ -115,5 +127,29 @@ public class User {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public List<Gameweek> getGameweeks() {
+        return gameweeks;
+    }
+
+    public void setGameweeks(List<Gameweek> gameweeks) {
+        this.gameweeks = gameweeks;
+    }
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
+    }
+
+    public List<ScoreSheet> getScoresheets() {
+        return scoresheets;
+    }
+
+    public void setScoresheets(List<ScoreSheet> scoresheets) {
+        this.scoresheets = scoresheets;
     }
 }

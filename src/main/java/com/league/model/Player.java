@@ -1,6 +1,7 @@
 package com.league.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "players")
@@ -26,6 +27,10 @@ public class Player {
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="user_id")
     private User user;
+
+    @OneToMany(mappedBy="player", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<ScoreSheet> scoreSheets;
 
 
     public Player() {
@@ -103,5 +108,13 @@ public class Player {
 
     public void setRedCards(int redCards) {
         this.redCards = redCards;
+    }
+
+    public List<ScoreSheet> getScoreSheets() {
+        return scoreSheets;
+    }
+
+    public void setScoreSheets(List<ScoreSheet> scoreSheets) {
+        this.scoreSheets = scoreSheets;
     }
 }

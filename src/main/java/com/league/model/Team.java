@@ -19,7 +19,6 @@ public class Team {
     private int wins;
     private int draws;
     private int loses;
-    /*private int matches; //do zmiany*/
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -31,9 +30,34 @@ public class Team {
     @JoinColumn(name = "league_id")
     private League league;
 
-    @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @OneToMany(mappedBy = "team",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Player> players;
+
+    @OneToMany(mappedBy = "host", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Match> hostMatches;
+
+    @OneToMany(mappedBy = "guest", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Match> guestMatches;
+
+    public List<Match> getHostMatches() {
+        return hostMatches;
+    }
+
+    public void setHostMatches(List<Match> hostMatches) {
+        this.hostMatches = hostMatches;
+    }
+
+    public List<Match> getGuestMatches() {
+        return guestMatches;
+    }
+
+    public void setGuestMatches(List<Match> guestMatches) {
+        this.guestMatches = guestMatches;
+    }
 
     public League getLeague() {
         return league;
@@ -135,4 +159,10 @@ public class Team {
     public String toString() {
         return getName();
     }
+
+    public int numberOfMatches() {
+        return wins+draws+loses;
+    }
+
+    public int numberOfPlayers() { return players.size();}
 }

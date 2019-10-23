@@ -7,7 +7,6 @@ import com.league.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +20,9 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     UserService userService;
 
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-
     @Override
     public void savePlayer(Player player) {
-        if(player.getUser() == null) {
+        if (player.getUser() == null) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.findByUsername(auth.getName());
             player.setUser(user);

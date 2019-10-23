@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Index page</title>
+</head>
+<body>
+<h1>Match Details</h1>
+
+<form action="#" th:action="@{/user/matches/saveMatch}"
+      th:object="${match}" method="POST">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{user}">
+    <input type="hidden" th:field="*{league}"><br>
+
+    <br>
+    <table border = "0">
+        <tbody>
+        <tr>
+            <td><select th:field="*{host}">
+                <option th:value="0" text="">-----</option>
+                <option th:each="team : ${match.league.teams}" th:value="${team.id}" th:text="${team.name}"></option>
+            </select></td>
+            <td><input type="number" th:field="*{hostScore}" placeholder="-"></td>
+            <td> : </td>
+            <td><input type="number" th:field="*{guestScore}" placeholder="-"></td>
+            <td><select th:field="*{guest}">
+                <option th:value="0" text="">-----</option>
+                <option th:each="team : ${match.league.teams}" th:value="${team.id}" th:text="${team.name}"></option>
+            </select></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--<input type="date" th:field="*{date}" >
+    <input th:type="text" th:field="*{time}" placeholder="place">-->
+    <input th:type="text" th:field="*{pitch}" placeholder="place">
+
+    <h2>Teams:</h2>
+
+
+    <table border = "1">
+        <thead>
+        <tr>
+            <th width="10">Red</th>
+            <th>Yellow</th>
+            <th>Own Goals</th>
+            <th>Goals Scored</th>
+            <th>  </th>
+            <th>Player</th>
+            <th>Number</th>
+            <th>  </th>
+            <th>Number</th>
+            <th>Player</th>
+            <th>  </th>
+            <th>Goals Scored</th>
+            <th>Own Goals</th>
+            <th>Yellow</th>
+            <th>Red</th>
+        </tr>
+        </thead>
+    </table>
+
+    <table border = "0">
+        <tbody>
+            <tr th:each="sheet, itemStat : *{hostScoreSheets}">
+                <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].id}" >
+                <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].user}" >
+                <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].match}" >
+                <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].player}" >
+                <td><input type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].redCards}" placeholder="-"></td>
+                <td><input type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].yellowCards}" placeholder="-"></td>
+                <td><input type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].ownGoals}" placeholder="-"></td>
+                <td><input type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].goals}" placeholder="-"></td>
+                <td th:text="${sheet.player.name}+' '+${sheet.player.surname}" />
+                <td th:text="${sheet.player.number}" />
+                <td>   </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <table border = "0">
+        <tbody>
+            <tr th:each="sheet, itemStat : *{guestScoreSheets}">
+                <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].id}" >
+                <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].user}" >
+                <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].match}" >
+                <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].player}" >
+                <td th:text="${sheet.player.number}" />
+                <td th:text="${sheet.player.surname}+' '+${sheet.player.name}" />
+                <td><input type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].goals}" placeholder="-"></td>
+                <td><input type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].ownGoals}" placeholder="-"></td>
+                <td><input type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].yellowCards}" placeholder="-"></td>
+                <td><input type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].redCards}" placeholder="-"></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <br><button type="submit">Save changes</button>
+    <p><a th:href="@{/user/leagues/manageActiveLeague(leagueId=${match.league.id})}">back to My League</a></p>
+
+</form>
+
+</body>
+</html>
