@@ -15,6 +15,7 @@ public class Player {
     private String surname;
     private int number;
     private int goals;
+    private int ownGoals;
     private int yellowCards;
     private int redCards;
 
@@ -92,6 +93,14 @@ public class Player {
 
     public void setGoals(int goals) {
         this.goals = goals;
+    }
+
+    public int getOwnGoals() {
+        return ownGoals;
+    }
+
+    public void setOwnGoals(int ownGoals) {
+        this.ownGoals = ownGoals;
     }
 
     public int getYellowCards() {

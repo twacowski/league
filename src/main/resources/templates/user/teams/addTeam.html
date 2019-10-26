@@ -1,26 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Index page</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Match details page</title>
 </head>
 <body>
-<h1>Adding Team</h1>
+<div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
+    <div class="container d-flex" align="center">
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/index}">Home</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
+        <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+    </div>
+</div>
 
-<form action="#" th:action="@{/user/teams/addTeamProceed}"
-      th:object="${team}" method="POST">
-    <input type="text" th:field="*{name}" placeholder="Team name">
-    <select th:field="*{league}">
-        <option th:value="0" text="">-----</option>
-        <option th:each="league : ${leagues}" th:value="${league.id}" th:text="${league.name}"></option>
-    </select>
+<div class="container d-flex justify-content-center">
+    <div style="width: 750px">
+        <h1>Adding Team</h1>
+        <br>
+        <form action="#" th:action="@{/user/teams/addTeamProceed}"
+              th:object="${team}" method="POST">
 
-    <button type="submit">Add Team</button>
-    <p><a th:href="@{/user/teams/myTeams}">back to My Teams</a></p>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Team Name</label>
+                <div class="col-sm-9">
+                    <input class="form-control px-2" type="text" th:field="*{name}" placeholder="Team name">
+                </div>
+            </div>
 
-</form>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Team</label>
+                <div class="col-sm-9">
+                    <select class="form-control px-2" th:field="*{league}">
+                        <option th:value="0" text="">-----</option>
+                        <option th:each="league : ${leagues}" th:value="${league.id}" th:text="${league.name}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <a  class="btn btn-secondary my-1" th:href="@{/user/teams/myTeams}">back to My Teams</a>
+                <button type="submit" class="btn btn-success btn-lg ml-auto">Add Team</button>
+            </div>
+
+        </form>
+    </div>
+</div>
 
 </body>
 </html>

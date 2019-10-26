@@ -1,31 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Index page</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Match details page</title>
 </head>
 <body>
-<h1>Edit player</h1>
+<div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
+    <div class="container d-flex" align="center">
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/index}">Home</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
+        <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+    </div>
+</div>
 
-<form action="#" th:action="@{/user/players/editPlayerProceed}"
-      th:object="${player}" method="POST">
-    <input type="hidden" th:field="*{id}" />
+<div class="container d-flex justify-content-center">
+    <div style="width: 750px">
+        <h1>Edit player</h1>
+        <br>
+        <form action="#" th:action="@{/user/players/editPlayerProceed}"
+              th:object="${player}" method="POST">
+            <input type="hidden" th:field="*{id}" />
 
-    <p><input type="number" th:field="*{number}" placeholder="-"></p>
-    <p><input type="text" th:field="*{name}" placeholder="Player name"></p>
-    <p><input type="text" th:field="*{surname}" placeholder="Player surname"></p>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Number</label>
+                <div class="col-sm-9">
+                    <input class="form-control px-2" type="number" th:field="*{number}" placeholder="-">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Player Name</label>
+                <div class="col-sm-9">
+                    <input class="form-control px-2" type="text" th:field="*{name}" placeholder="Player name">
+                </div>
+            </div>
 
-    <select th:field="*{team}">
-        <option th:value="0" text="">-----</option>
-        <option th:each="x : ${teams}" th:value="${x.id}" th:text="${x.name}"></option>
-    </select>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Player Surname</label>
+                <div class="col-sm-9">
+                    <input class="form-control px-2" type="text" th:field="*{surname}" placeholder="Player surname">
+                </div>
+            </div>
 
-    <p><button type="submit">Confirm</button></p>
-    <p><a th:href="@{/user/players/myPlayers}">back to My Players</a></p>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Team</label>
+                <div class="col-sm-9">
+                    <select class="form-control px-2" th:field="*{team}">
+                        <option th:value="0" text="">-----</option>
+                        <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+                    </select>
+                </div>
+            </div>
 
-</form>
+            <div class="d-flex">
+                <a  class="btn btn-secondary my-1" th:href="@{/user/players/myPlayers}">back to My Players</a>
+                <button type="submit" class="btn btn-success btn-lg ml-auto">Edit Player</button>
+            </div>
+
+        </form>
+    </div>
+</div>
 
 </body>
 </html>
