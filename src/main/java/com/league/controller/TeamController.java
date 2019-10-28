@@ -6,9 +6,12 @@ import com.league.service.league.LeagueService;
 import com.league.service.player.PlayerService;
 import com.league.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -26,8 +29,16 @@ public class TeamController {
     PlayerService playerService;
 
     @GetMapping("myTeams")
-    public String myTeams(Model model) {
-        model.addAttribute("teams", teamService.getUserTeams());
+    public String myTeams(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("page", 0);
+        redirectAttributes.addAttribute("size", 10);
+        return "redirect:teamsList";
+    }
+
+    @GetMapping("teamsList")
+    public String teamsList(Pageable pageable, Model model) {
+        Page<Team> teams = teamService.findAll(pageable);
+        model.addAttribute("teams", teams);
         return "user/teams/myTeams";
     }
 

@@ -49,11 +49,40 @@
 
     </table>
 
+    <div th:unless="${players.getTotalPages() == 1}" class="row">
+        <div class="col">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pg-teal">
+                    <li th:if="${players.getPageable().getPageNumber() != 0}" class="page-item">
+                        <a class="page-link" th:href="@{/user/players/playersList(page=${players.getPageable().getPageNumber()-1})}">Previous</a>
+                    </li>
+
+                    <li th:each="pageNumber : ${#numbers.sequence((players.getPageable().getPageNumber()-2),(players.getPageable().getPageNumber()))}" th:if="${pageNumber > 0}" class="page-item">
+                        <a th:text="${pageNumber}" class="page-link" th:href="@{/user/players/playersList(page=${pageNumber-1})}"></a>
+                    </li>
+
+                    <li class="page-item active"><a th:text="${players.getPageable().getPageNumber()+1}" class="page-link" href="#"></a></li>
+
+                    <li th:each="pageNumber : ${#numbers.sequence((players.getPageable().getPageNumber()+1),(players.getPageable().getPageNumber()+3))}" th:if="${pageNumber < players.getTotalPages()}" class="page-item">
+                        <a th:text="${pageNumber+1}" class="page-link" th:href="@{/user/players/playersList(page=${pageNumber})}"></a>
+                    </li>
+
+                    <li th:if="${players.getPageable().getPageNumber()+1 < players.getTotalPages()}" class="page-item">
+                        <a class="page-link" th:href="@{/user/players/playersList(page=${players.getPageable().getPageNumber()+1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
     <div class="d-flex">
         <a class="btn btn-secondary my-1 ml-2" th:href="@{/user/index}">back to User Panel</a>
         <a class="btn btn-success ml-auto btn-lg mr-3" th:href="@{/user/players/addPlayer}">Add Player</a>
     </div>
     <br>
+
+
+
 
 </div>
 </body>

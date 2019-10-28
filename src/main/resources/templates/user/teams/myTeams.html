@@ -46,6 +46,32 @@
 
     </table>
 
+    <div th:unless="${teams.getTotalPages() == 1}" class="row">
+        <div class="col">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pg-teal">
+                    <li th:if="${teams.getPageable().getPageNumber() != 0}" class="page-item">
+                        <a class="page-link" th:href="@{/user/teams/teamsList(page=${teams.getPageable().getPageNumber()-1})}">Previous</a>
+                    </li>
+
+                    <li th:each="pageNumber : ${#numbers.sequence((teams.getPageable().getPageNumber()-2),(teams.getPageable().getPageNumber()))}" th:if="${pageNumber > 0}" class="page-item">
+                        <a th:text="${pageNumber}" class="page-link" th:href="@{/user/teams/teamsList(page=${pageNumber-1})}"></a>
+                    </li>
+
+                    <li class="page-item active"><a th:text="${teams.getPageable().getPageNumber()+1}" class="page-link" href="#"></a></li>
+
+                    <li th:each="pageNumber : ${#numbers.sequence((teams.getPageable().getPageNumber()+1),(teams.getPageable().getPageNumber()+3))}" th:if="${pageNumber < teams.getTotalPages()}" class="page-item">
+                        <a th:text="${pageNumber+1}" class="page-link" th:href="@{/user/teams/teamsList(page=${pageNumber})}"></a>
+                    </li>
+
+                    <li th:if="${teams.getPageable().getPageNumber()+1 < teams.getTotalPages()}" class="page-item">
+                        <a class="page-link" th:href="@{/user/teams/teamsList(page=${teams.getPageable().getPageNumber()+1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
     <div class="d-flex">
         <a class="btn btn-secondary my-1 ml-2" th:href="@{/user/index}">back to User Panel</a>
         <a class="btn btn-success ml-auto btn-lg mr-3" th:href="@{/user/teams/addTeam}">Add Team</a>

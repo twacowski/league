@@ -20,22 +20,40 @@
     </div>
 </div>
 
-<h1>Starting League</h1>
+<div class="container d-flex justify-content-center">
+    <div style="width: 750px">
+        <h1>Starting League</h1>
+        <br>
+        <form action="#" th:action="@{/user/leagues/startLeagueProceed}"
+              th:object="${league}" method="POST">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{teams}">
 
-<form action="#" th:action="@{/user/leagues/startLeagueProceed}"
-      th:object="${league}" method="POST">
-    <input type="hidden" th:field="*{id}">
-    <input type="hidden" th:field="*{teams}">
-    <input type="text" th:field="*{name}" placeholder="League name">
-    <br>Rematch: <select th:field="*{rematch}">
-        <option th:value="false" text="No">No</option>
-        <option th:value="true" text="Yes">Yes</option>
-    </select>
-    <br><button type="submit">Start the League!</button>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">League Name</label>
+                <div class="col-sm-9">
+                    <input class="form-control px-2" type="text" th:field="*{name}" placeholder="League Name">
+                </div>
+            </div>
 
-    <p><a th:href="@{/user/leagues/myLeagues}">back to My Leagues</a></p>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Rematch</label>
+                <div class="col-sm-9">
+                    <select class="form-control px-2" th:field="*{rematch}">
+                        <option th:value="false" text="No">No</option>
+                        <option th:value="true" text="Yes">Yes</option>
+                    </select>
+                </div>
+            </div>
 
-</form>
+            <div class="d-flex">
+                <a  class="btn btn-secondary my-1" th:href="@{/user/leagues/myLeagues}">back to My Leagues</a>
+                <button type="submit" class="btn btn-success btn-lg ml-auto">Start league!</button>
+            </div>
+
+        </form>
+    </div>
+</div>
 
 </body>
 </html>

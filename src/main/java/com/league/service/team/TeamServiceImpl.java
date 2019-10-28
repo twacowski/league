@@ -5,6 +5,8 @@ import com.league.model.User;
 import com.league.repository.TeamRepository;
 import com.league.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     UserService userService;
+
+    @Override
+    public Page<Team> findAll(Pageable pageable) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return teamRepository.findAllByUserName(pageable, auth.getName());
+    }
 
     @Override
     public void saveTeam(Team team) {

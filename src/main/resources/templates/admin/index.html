@@ -20,6 +20,50 @@
     </div>
 </div>
 
-Admin Panel Page
+<div class="container">
+    <h1>Admin Panel Page</h1>
+    <br>
+    <h1>Users List</h1>
+    <br>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th style="width: 85px">Id</th>
+            <th>Nickname</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th class="text-center">Active</th>
+            <th>Roles</th>
+            <th class="text-center">Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="user: ${users}">
+            <td class="align-middle" align="center" th:text="${user.id}" />
+            <td class="align-middle font-weight-bold" th:text="${user.userName}" />
+            <td class="align-middle" th:text="${user.name}" />
+            <td class="align-middle" th:text="${user.lastName}" />
+            <td class="align-middle" th:text="${user.email}" />
+            <td class="align-middle" align="center">
+                <span class="badge badge-success" th:if="${user.isActive()}">Active</span>
+                <span class="badge badge-danger" th:unless="${user.isActive()}">Inactive</span>
+            </td>
+            <td class="align-middle" th:text="${user.roles}" />
+            <td class="align-middle" align="center" style="width: 300px"><a class="btn btn-info mx-1" th:href="@{/admin/editUser(userId=${user.id})}">Edit User Status</a>
+                <a class="btn btn-danger" th:href="@{/admin/deleteUser(userId=${user.id})}"
+                   onclick="if (!(confirm('Are you sure you want to delete this user?'))) return false">Delete User</a></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+</div>
+
+
 </body>
 </html>

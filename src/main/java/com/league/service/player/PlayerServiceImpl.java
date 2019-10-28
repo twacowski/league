@@ -5,6 +5,8 @@ import com.league.model.User;
 import com.league.repository.PlayerRepository;
 import com.league.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     UserService userService;
+
+    @Override
+    public Page<Player> findAll(Pageable pageable) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return playerRepository.findAllByUserName(pageable, auth.getName());
+    }
 
     @Override
     public void savePlayer(Player player) {
