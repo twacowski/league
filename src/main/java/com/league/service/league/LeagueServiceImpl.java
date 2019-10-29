@@ -59,6 +59,7 @@ public class LeagueServiceImpl implements LeagueService {
 
     }
 
+    @Override
     public void populateGameweeks(League league) {
         List<Team> teams = league.getTeams();
         int numberOfTeams = teams.size();
@@ -140,6 +141,7 @@ public class LeagueServiceImpl implements LeagueService {
         leagueRepository.save(league);
     }
 
+    @Override
     public void createGameweeks(League league) {
         int numberOfGameweeks = league.numberOfTeams();
         if (numberOfGameweeks % 2 == 0) {

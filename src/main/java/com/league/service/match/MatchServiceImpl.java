@@ -1,6 +1,7 @@
 package com.league.service.match;
 
 import com.league.model.Match;
+import com.league.model.Player;
 import com.league.model.ScoreSheet;
 import com.league.model.Team;
 import com.league.repository.MatchRepository;
@@ -30,7 +31,9 @@ public class MatchServiceImpl implements MatchService {
         if(theMatch.getHostScore() != null && theMatch.getGuestScore() != null) {
             theMatch.setPlayed(true);
         }
-        actualizeMatchStats(theMatch);
+        updateMatchStats(theMatch);
+        matchRepository.save(theMatch);
+        updatePlayers(theMatch);
         matchRepository.save(theMatch);
     }
 
@@ -72,12 +75,14 @@ public class MatchServiceImpl implements MatchService {
         matchRepository.save(match);
     }
 
-    public void actualizeMatchStats(Match match) {
-        match.setHost(actualizeTeamStats(match.getHost()));
-        match.setGuest(actualizeTeamStats(match.getGuest()));
+    @Override
+    public void updateMatchStats(Match match) {
+        match.setHost(updateTeamStats(match.getHost()));
+        match.setGuest(updateTeamStats(match.getGuest()));
     }
 
-    public Team actualizeTeamStats(Team team) {
+    @Override
+    public Team updateTeamStats(Team team) {
         int wins = 0, draws = 0, loses = 0, scoredGoals = 0, concededGoals = 0, points = 0, balance = 0;
         List<Match> matches = team.getHostMatches();
         for(Match match : matches) {
@@ -123,5 +128,33 @@ public class MatchServiceImpl implements MatchService {
         team.setPoints(points);
 
         return team;
+    }
+
+    @Override
+    public void updatePlayers(Match match) {
+        for (Player player : match.getHost().getPlayers()) {
+            updatePlayerStats(player);
+        }
+
+        for (Player player : match.getGuest().getPlayers()) {
+            updatePlayerStats(player);
+        }
+    }
+
+    @Override
+    public void updatePlayerStats(Player player) {
+        int goals = 0, ownGoals = 0, yellowCards = 0, redCards = 0;
+        for (ScoreSheet sheet: player.getScoreSheets()) {
+            if(sheet.getMatch().isPlayed()) {
+                goals += sheet.getGoals();
+                ownGoals += sheet.getOwnGoals();
+                yellowCards += sheet.getYellowCards();
+                redCards += sheet.getRedCards();
+            }
+        }
+        player.setGoals(goals);
+        player.setOwnGoals(ownGoals);
+        player.setYellowCards(yellowCards);
+        player.setRedCards(redCards);
     }
 }

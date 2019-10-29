@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Match details page</title>
+</head>
+<body>
+<div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
+    <div class="container d-flex" align="center">
+        <a class="btn btn-dark font-weight-bold" th:href="@{/index}">Home</a>
+        <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+    </div>
+</div>
+
+<div class="container" align="center">
+
+    <h1 th:text="${league.name}" />
+
+    <ul class="nav nav-tabs justify-content-center mt-3">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/league(leagueId=${league.id})}">Standings & Schedule</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/view/topScorers(leagueId=${league.id})}">Top Scorers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/ownGoals(leagueId=${league.id})}">Own Goals</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/yellowCards(leagueId=${league.id})}">Yellow Cards</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/redCards(leagueId=${league.id})}">Red Cards</a>
+        </li>
+    </ul>
+    <br>
+
+    <table class="table table-striped" style="width: 890px">
+        <thead class="thead-dark">
+        <tr>
+            <th class="text-center"><img width="30" height="30" th:src="@{/images/goal.png}"/></th>
+            <th colspan="2" class="text-center align-middle pr-5" ><h4 class="pr-5"> Top Scorers</h4></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="scorer: ${topScorers}">
+            <td class="align-middle" style="width: 90px;" align="center" th:text="${scorer.goals}"/>
+            <td class="align-middle" style="width: 450px;" align="left" th:text="${scorer.surname}+' '+${scorer.name}"/>
+            <td class="align-middle" style="width: 350px;" align="left" th:text="${scorer.team.name}"/>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

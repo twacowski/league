@@ -12,4 +12,6 @@ public interface LeagueService {
     List<League> getUserLeagues();
     void startLeague(League league);
     List<Team> getStandings(League league);
+    void populateGameweeks(League league);
+    void createGameweeks(League league);
 }

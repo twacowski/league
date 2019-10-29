@@ -3,6 +3,7 @@ package com.league.controller;
 import com.league.model.League;
 import com.league.model.Team;
 import com.league.service.league.LeagueService;
+import com.league.service.player.PlayerService;
 import com.league.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ public class LeagueController {
 
     @Autowired
     TeamService teamService;
+
+    @Autowired
+    private PlayerService playerService;
 
     @GetMapping("myLeagues")
     public String myLeagues(Model model) {
@@ -89,6 +93,42 @@ public class LeagueController {
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
         return "/user/leagues/manageActiveLeague";
+    }
+
+    @GetMapping("topScorers")
+    public String topScorers(@RequestParam("leagueId") int leagueId, Model model) {
+        League league = leagueService.findById(leagueId);
+        model.addAttribute("league", league);
+        model.addAttribute("standings", leagueService.getStandings(league));
+        model.addAttribute("topScorers", playerService.getTopScorers(league));
+        return "/user/leagues/topScorers";
+    }
+
+    @GetMapping("ownGoals")
+    public String ownGoals(@RequestParam("leagueId") int leagueId, Model model) {
+        League league = leagueService.findById(leagueId);
+        model.addAttribute("league", league);
+        model.addAttribute("standings", leagueService.getStandings(league));
+        model.addAttribute("ownGoals", playerService.getMostOwnGoals(league));
+        return "/user/leagues/ownGoals";
+    }
+
+    @GetMapping("yellowCards")
+    public String yellowCards(@RequestParam("leagueId") int leagueId, Model model) {
+        League league = leagueService.findById(leagueId);
+        model.addAttribute("league", league);
+        model.addAttribute("standings", leagueService.getStandings(league));
+        model.addAttribute("yellowCards", playerService.getMostYellowCards(league));
+        return "/user/leagues/yellowCards";
+    }
+
+    @GetMapping("redCards")
+    public String redCards(@RequestParam("leagueId") int leagueId, Model model) {
+        League league = leagueService.findById(leagueId);
+        model.addAttribute("league", league);
+        model.addAttribute("standings", leagueService.getStandings(league));
+        model.addAttribute("redCards", playerService.getMostRedCards(league));
+        return "/user/leagues/redCards";
     }
 
 }

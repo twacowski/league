@@ -10,20 +10,37 @@
     <title>Match details page</title>
 </head>
 <body>
-<div class="p-3 mb-2 bg-dark text-white navbar fixed-top" style="height: 70px;">
+<div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
     <div class="container d-flex" align="center">
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/index}">Home</a>
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
-        <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/index}">Home</a>
+        <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
     </div>
 </div>
-<br><br><br><br>
-
 
 <div class="container" align="center">
+
     <h1 th:text="${league.name}" />
+
+    <ul class="nav nav-tabs justify-content-center mt-3">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/view/league(leagueId=${league.id})}">Standings & Schedule</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/topScorers(leagueId=${league.id})}">Top Scorers</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/ownGoals(leagueId=${league.id})}">Own Goals</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/yellowCards(leagueId=${league.id})}">Yellow Cards</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/view/redCards(leagueId=${league.id})}">Red Cards</a>
+        </li>
+    </ul>
+    <br>
+
 
     <table class="table table-bordered table-striped" align="center" >
         <thead class="thead-dark">
@@ -58,37 +75,8 @@
 
     </table>
 
-    <div class="d-flex">
-        <div class="ml-3"><a class="btn btn-secondary p2" th:href="@{/user/leagues/myLeagues}">Back to Leagues Panel</a></div>
-        <div class="input-group ml-auto mr-5" style="width: 800px">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Share your league URL:</span>
-            </div>
-            <input type="text" class="form-control pl-3" readonly id="basic-url" aria-describedby="basic-addon3" th:value="'http://localhost:8080/view/league?leagueId='+${league.id}"/>
-        </div>
-    </div>
-
-
-
     <br>
-    <ul class="nav nav-tabs justify-content-center">
-        <li class="nav-item">
-            <a class="nav-link active" th:href="@{/user/leagues/manageActiveLeague(leagueId=${league.id})}">Schedule</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/user/leagues/topScorers(leagueId=${league.id})}">Top Scorers</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/user/leagues/ownGoals(leagueId=${league.id})}">Own Goals</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/user/leagues/yellowCards(leagueId=${league.id})}">Yellow Cards</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/user/leagues/redCards(leagueId=${league.id})}">Red Cards</a>
-        </li>
-    </ul>
-    <br>
+
 
     <table>
         <tbody>
@@ -97,9 +85,7 @@
             <table class="table table-striped">
                 <thead class="thead-dark">
                 <tr>
-                    <th colspan="2"/>
-                    <th colspan="5" class="text-center"  th:text="Gameweek+' '+${gameweek.number}" />
-                    <th colspan="1"/>
+                    <th colspan="8" class="text-center"  th:text="Gameweek+' '+${gameweek.number}" />
                 </tr>
                 </thead>
 
@@ -113,8 +99,8 @@
                     <td class="align-middle" style="width: 30px;" align="center" th:text="${match.guestScore}" />
                     <td class="align-middle" style="width: 250px;" align="left" th:text="${match.guest}" />
                     <td class="align-middle" style="width: 150px;" align="center">
-                        <a th:href="@{/user/matches/matchDetails(matchId=${match.id})}"
-                        class="btn btn-primary btn-sm" >Match Details</a></td>
+                        <a th:href="@{/view/matchDetails(matchId=${match.id})}"
+                           class="btn btn-primary btn-sm" >Match Details</a></td>
                 </tr>
                 </tbody>
 

@@ -14,36 +14,36 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="league_id")
+    @JoinColumn(name = "league_id")
     private League league;
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="gameweek_id")
+    @JoinColumn(name = "gameweek_id")
     private Gameweek gameweek;
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="host_id")
+    @JoinColumn(name = "host_id")
     private Team host;
 
-    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="guest_id")
+    @JoinColumn(name = "guest_id")
     private Team guest;
 
-    @OneToMany(mappedBy="match", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @OneToMany(mappedBy = "match", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<ScoreSheet> hostScoreSheets;
 
-    @OneToMany(mappedBy="match", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @OneToMany(mappedBy = "match", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<ScoreSheet> guestScoreSheets;
 
@@ -166,27 +166,24 @@ public class Match {
 
     //TODO EDIT THIS GETTERS AND SETTERS ----> TOO COMPLICATED!
     public List<ScoreSheet> getHostScoreSheets() {
-        if(hostScoreSheets == null) {
-            return null;
-        } else {
-            for(int i = 0; i < hostScoreSheets.size(); i++) {
-                if (hostScoreSheets.get(i) == null || hostScoreSheets.get(i).getMatch() == null || hostScoreSheets.get(i).getPlayer() == null) {
-                    break;
-                }
-                if (hostScoreSheets.get(i).getMatch().getGuest() == hostScoreSheets.get(i).getPlayer().getTeam()) {
-                    hostScoreSheets.remove(i);
-                }
+        for (int i = 0; i < hostScoreSheets.size(); i++) {
+            if (hostScoreSheets.get(i) == null || hostScoreSheets.get(i).getMatch() == null || hostScoreSheets.get(i).getPlayer() == null) {
+                break;
+            }
+            if (hostScoreSheets.get(i).getMatch().getGuest() == hostScoreSheets.get(i).getPlayer().getTeam()) {
+                hostScoreSheets.remove(i);
             }
         }
+
         return hostScoreSheets;
     }
 
     public void setHostScoreSheets(List<ScoreSheet> hostScoreSheets) {
-        if(hostScoreSheets == null) {
+        if (hostScoreSheets == null) {
             this.hostScoreSheets = hostScoreSheets;
             return;
         } else {
-            for(int i = 0; i < hostScoreSheets.size(); i++) {
+            for (int i = 0; i < hostScoreSheets.size(); i++) {
                 if (hostScoreSheets.get(i) == null) {
                     break;
                 }
@@ -199,22 +196,19 @@ public class Match {
     }
 
     public List<ScoreSheet> getGuestScoreSheets() {
-        if(guestScoreSheets == null) {
-            return null;
-        } else {
-            for (int i = 0; i < guestScoreSheets.size(); i++) {
-                if (guestScoreSheets.get(i) == null || guestScoreSheets.get(i).getMatch() == null || guestScoreSheets.get(i).getPlayer() == null) {
-                    break;
-                } else if (guestScoreSheets.get(i).getMatch().getHost().equals(guestScoreSheets.get(i).getPlayer().getTeam())) {
-                    guestScoreSheets.remove(i);
-                }
+        for (int i = 0; i < guestScoreSheets.size(); i++) {
+            if (guestScoreSheets.get(i) == null || guestScoreSheets.get(i).getMatch() == null || guestScoreSheets.get(i).getPlayer() == null) {
+                break;
+            } else if (guestScoreSheets.get(i).getMatch().getHost().equals(guestScoreSheets.get(i).getPlayer().getTeam())) {
+                guestScoreSheets.remove(i);
             }
         }
+
         return guestScoreSheets;
     }
 
     public void setGuestScoreSheets(List<ScoreSheet> guestScoreSheets) {
-        if(guestScoreSheets == null) {
+        if (guestScoreSheets == null) {
             this.guestScoreSheets = guestScoreSheets;
             return;
         } else {
