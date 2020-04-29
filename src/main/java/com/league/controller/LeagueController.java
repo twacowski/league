@@ -2,10 +2,14 @@ package com.league.controller;
 
 import com.league.model.League;
 import com.league.model.Team;
+import com.league.model.enums.Status;
+import com.league.model.Voivodeship;
 import com.league.service.league.LeagueService;
+import com.league.service.location.LocationService;
 import com.league.service.player.PlayerService;
 import com.league.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,9 @@ public class LeagueController {
     TeamService teamService;
 
     @Autowired
+    LocationService locationService;
+
+    @Autowired
     private PlayerService playerService;
 
     @GetMapping("myLeagues")
@@ -34,11 +41,20 @@ public class LeagueController {
     @GetMapping("addLeague")
     public String addLeague(Model model) {
         model.addAttribute("league", new League());
+        model.addAttribute("voivodeships", locationService.getListOfVoivodeships());
+        model.addAttribute("counties", locationService.getListOfCounties());
         return "user/leagues/addLeague";
+    }
+
+    @GetMapping("/getStateCityValues")
+    @ResponseBody
+    public ResponseEntity<?> getStateCountyValues(@RequestParam("voivodeship") Voivodeship voivodeship) {
+        return ResponseEntity.ok(locationService.getCountiesFromVoivodeship(voivodeship));
     }
 
     @PostMapping("addLeagueProceed")
     public String addTeamLeague(@ModelAttribute("league") League league) {
+        league.setStatus(Status.INACTIVE);
         leagueService.saveLeague(league);
         return "redirect:/user/leagues/myLeagues";
     }

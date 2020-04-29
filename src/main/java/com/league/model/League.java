@@ -1,5 +1,8 @@
 package com.league.model;
 
+import com.league.model.enums.CompetitionType;
+import com.league.model.enums.Status;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,15 +16,39 @@ public class League {
     private String name;
     private boolean isStarted;
     private boolean rematch;
+    private boolean enrollment;
+    private String city;
+    private int number;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Enumerated(EnumType.STRING)
+    private CompetitionType type;
+    private int season;
 
     @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="user_id")
     private User user;
 
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name="voivodeship_id")
+    private Voivodeship voivodeship;
+
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name="county_id")
+    private County county;
+
     @OneToMany(mappedBy="league", cascade={CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Team> teams;
+
+    @OneToMany(mappedBy="league", cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Participation> participationList;
 
     @OneToMany(mappedBy="league", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -38,10 +65,6 @@ public class League {
     public void setUser(User user) {
         this.user = user;
     }
-
-    /*
-    private int table; //do zmiany
-    private int goalscorers; // do zmiany*/
 
     public int getId() {
         return id;
@@ -106,5 +129,81 @@ public class League {
 
     public int numberOfTeams() {
         return teams.size();
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public CompetitionType getType() {
+        return type;
+    }
+
+    public void setType(CompetitionType type) {
+        this.type = type;
+    }
+
+    public boolean isEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(boolean enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    public Integer getSeason() {
+        return season;
+    }
+
+    public void setSeason(Integer season) {
+        this.season = season;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
+    }
+
+    public List<Participation> getParticipationList() {
+        return participationList;
+    }
+
+    public void setParticipationList(List<Participation> participationList) {
+        this.participationList = participationList;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public Voivodeship getVoivodeship() {
+        return voivodeship;
+    }
+
+    public void setVoivodeship(Voivodeship voivodeship) {
+        this.voivodeship = voivodeship;
+    }
+
+    public County getCounty() {
+        return county;
+    }
+
+    public void setCounty(County county) {
+        this.county = county;
     }
 }

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Match details page</title>
 </head>
 <body>
@@ -20,7 +21,7 @@
 
 <div class="container" align="center">
 
-    <h1 th:text="${league.name}" />
+    <h1 th:text="${league.name}"/>
 
     <ul class="nav nav-tabs justify-content-center mt-3">
         <li class="nav-item">
@@ -42,34 +43,34 @@
     <br>
 
 
-    <table class="table table-bordered table-striped" align="center" >
+    <table class="table table-bordered table-striped" align="center">
         <thead class="thead-dark">
         <tr align="center">
-            <th> # </th>
-            <th class="text-left"> Team Name </th>
-            <th> Played </th>
-            <th> Wins </th>
-            <th> Draws </th>
-            <th> Loses </th>
-            <th> Scored </th>
-            <th> Conceded </th>
-            <th> +/- </th>
-            <th> Points </th>
+            <th> #</th>
+            <th class="text-left"> Team Name</th>
+            <th> Played</th>
+            <th> Wins</th>
+            <th> Draws</th>
+            <th> Loses</th>
+            <th> Scored</th>
+            <th> Conceded</th>
+            <th> +/-</th>
+            <th> Points</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr align="center" th:each="team: ${standings}" >
-            <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+." />
-            <td align="left" style="width: 400px;" th:text="${team.name}" />
-            <td style="width: 100px;" th:text="${team.numberOfMatches()}" />
-            <td style="width: 100px;" th:text="${team.wins}" />
-            <td style="width: 100px;" th:text="${team.draws}" />
-            <td style="width: 100px;" th:text="${team.loses}" />
-            <td style="width: 100px;" th:text="${team.scoredGoals}" />
-            <td style="width: 100px;" th:text="${team.concededGoals}" />
-            <td style="width: 100px;" th:text="${team.balance}" />
-            <td style="width: 100px;" th:text="${team.points}" />
+        <tr align="center" th:each="team: ${standings}">
+            <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+."/>
+            <td align="left" style="width: 400px;" th:text="${team.name}"/>
+            <td style="width: 100px;" th:text="${team.numberOfMatches()}"/>
+            <td style="width: 100px;" th:text="${team.wins}"/>
+            <td style="width: 100px;" th:text="${team.draws}"/>
+            <td style="width: 100px;" th:text="${team.loses}"/>
+            <td style="width: 100px;" th:text="${team.scoredGoals}"/>
+            <td style="width: 100px;" th:text="${team.concededGoals}"/>
+            <td style="width: 100px;" th:text="${team.balance}"/>
+            <td style="width: 100px;" th:text="${team.points}"/>
         </tr>
         </tbody>
 
@@ -80,31 +81,31 @@
 
     <table>
         <tbody>
-        <tr th:each="gameweek: ${league.gameweeks}" >
+        <tr th:each="gameweek: ${league.gameweeks}">
             <td>
-            <table class="table table-striped">
-                <thead class="thead-dark">
-                <tr>
-                    <th colspan="8" class="text-center"  th:text="Gameweek+' '+${gameweek.number}" />
-                </tr>
-                </thead>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th colspan="8" class="text-center" th:text="Gameweek+' '+${gameweek.number}"/>
+                    </tr>
+                    </thead>
 
-                <tbody>
-                <tr th:each="match: ${gameweek.matches}" >
-                    <td class="align-middle" style="width: 75px;" align="left" th:text="${match.date}" />
-                    <td class="align-middle" style="width: 75px;" align="left" th:text="${match.time}" />
-                    <td class="align-middle" style="width: 250px;" align="right" th:text="${match.host}"  />
-                    <td class="align-middle" style="width: 30px;" align="center" th:text="${match.hostScore}" />
-                    <td class="align-middle" style="width: 10px;" align="center"> : </td>
-                    <td class="align-middle" style="width: 30px;" align="center" th:text="${match.guestScore}" />
-                    <td class="align-middle" style="width: 250px;" align="left" th:text="${match.guest}" />
-                    <td class="align-middle" style="width: 150px;" align="center">
-                        <a th:href="@{/view/matchDetails(matchId=${match.id})}"
-                           class="btn btn-primary btn-sm" >Match Details</a></td>
-                </tr>
-                </tbody>
+                    <tbody>
+                    <tr th:each="match: ${gameweek.matches}">
+                        <td class="align-middle" style="width: 75px;" align="left" th:text="${match.date}"/>
+                        <td class="align-middle" style="width: 75px;" align="left" th:text="${match.time}"/>
+                        <td class="align-middle" style="width: 250px;" align="right" th:text="${match.host}"/>
+                        <td class="align-middle" style="width: 30px;" align="center" th:text="${match.hostScore}"/>
+                        <td class="align-middle" style="width: 10px;" align="center"> :</td>
+                        <td class="align-middle" style="width: 30px;" align="center" th:text="${match.guestScore}"/>
+                        <td class="align-middle" style="width: 250px;" align="left" th:text="${match.guest}"/>
+                        <td class="align-middle" style="width: 150px;" align="center">
+                            <a th:href="@{/view/matchDetails(matchId=${match.id})}"
+                               class="btn btn-primary btn-sm">Match Details</a></td>
+                    </tr>
+                    </tbody>
 
-            </table>
+                </table>
             </td>
         </tr>
         </tbody>

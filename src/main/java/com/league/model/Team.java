@@ -35,6 +35,11 @@ public class Team {
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Player> players;
 
+    @OneToMany(mappedBy = "team",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Participation> participationList;
+
     @OneToMany(mappedBy = "host", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Match> hostMatches;
