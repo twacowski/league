@@ -14,4 +14,8 @@ public interface LeagueService {
     List<Team> getStandings(League league);
     void populateGameweeks(League league);
     void createGameweeks(League league);
+    List<League> searchLeaguesByPhrase(String phrase);
+    List<League> getPopularLeagues();
+    List<League> getLatestLeagues();
+
 }

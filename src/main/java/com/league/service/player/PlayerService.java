@@ -18,4 +18,5 @@ public interface PlayerService {
     List<Player> getMostOwnGoals(League league);
     List<Player> getMostYellowCards(League league);
     List<Player> getMostRedCards(League league);
+    List<Player> searchPlayersByPhrase(String phrase);
 }

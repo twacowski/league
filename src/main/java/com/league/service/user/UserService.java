@@ -11,4 +11,5 @@ public interface UserService {
     List<User> getAll();
     void actualizeUser(User user);
     void deleteUser(int userId);
+    List<User> searchUsersByPhrase(String phrase);
 }

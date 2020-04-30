@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Match details page</title>
+</head>
+<body>
+<div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
+    <div class="container d-flex" align="center">
+        <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Competitions Base</a>
+        <form class="ml-auto form-inline my-2 my-lg-0" action="#" th:action="@{/search}" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+    </div>
+</div>
+
+<div class="container" align="center">
+
+    <h3>Results of searching</h3>
+    <br>
+
+    <table class="table table-striped ">
+        <thead class="thead-dark">
+        <tr align="center">
+            <th class="text-center" colspan="7"> Leagues</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="pl-4 align-middle font-italic">#</td>
+            <td class="pl-4 align-middle font-italic">League Name</td>
+            <td class="pl-4 align-middle font-italic">Status</td>
+            <td class="pl-4 align-middle font-italic">Voivodeship</td>
+            <td class="pl-4 align-middle font-italic">County</td>
+            <td class="pl-4 align-middle font-italic" align="center">Teams / Excpected Teams</td>
+            <td class="pl-4 align-middle font-italic">User</td>
+        </tr>
+        <tr th:each="league: ${leagues}">
+            <td class="pl-4 align-middle font-weight-bold" th:text="${leagues.indexOf(league)+1}+'.'"/>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${league.name}"/>
+            <td class="pl-4 align-middle font-weight-bold" th:switch="${league.status}">
+                <span class="badge badge-danger" th:case="${T(com.league.model.enums.Status).INACTIVE}">Inactive</span>
+                <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Open to register</span>
+                <span class="badge badge-success" th:case="${T(com.league.model.enums.Status).ACTIVE}">Active</span>
+                <span class="badge badge-secondary" th:case="${T(com.league.model.enums.Status).ARCHIVED}">Archived</span>
+            </td>
+            <td class="pl-4 align-middle font-weight-bold">
+                <span th:if="${league.voivodeship}==null">-</span>
+                <span th:unless="${league.voivodeship}==null" th:text="${league.voivodeship.name}"></span>
+            </td>
+            <td class="pl-4 align-middle font-weight-bold">
+                <span th:if="${league.county}==null">-</span>
+                <span th:unless="${league.county}==null" th:text="${league.county.name}"></span>
+            </td>
+            <td class="pl-4 align-middle font-weight-bold" align="center" th:text="${league.teams.size()}+' / '+${league.number}"/>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${league.user.userName}"/>
+        </tr>
+        </tbody>
+    </table>
+    <div class="align-middle font-italic" align="center">
+        <span th:if="${leagues.size()}==0">No results</span>
+    </div>
+    <br>
+
+    <table class="table table-striped ">
+        <thead class="thead-dark">
+        <tr align="center">
+            <th class="text-center" colspan="3">Teams</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="pl-4 align-middle font-italic">#</td>
+            <td class="pl-4 align-middle font-italic">Team Name</td>
+            <td class="pl-4 align-middle font-italic">User</td>
+        </tr>
+        <tr th:each="team: ${teams}">
+            <td class="pl-4 align-middle font-weight-bold" th:text="${teams.indexOf(team)+1}+'.'"/>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${team.name}"/>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${team.user.userName}"/>
+        </tr>
+        </tbody>
+    </table>
+    <div class="align-middle font-italic" align="center">
+        <span th:if="${teams.size()}==0">No results</span>
+    </div>
+    <br>
+
+    <table class="table table-striped ">
+        <thead class="thead-dark">
+        <tr align="center">
+            <th class="text-center" colspan="10">Players</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="pl-4 align-middle font-italic">#</td>
+            <td class="pl-4 align-middle font-italic">Name</td>
+            <td class="pl-4 align-middle font-italic">Surname</td>
+            <td class="pl-4 align-middle font-italic" align="center">Number</td>
+            <td class="pl-4 align-middle font-italic">Team</td>
+            <td class="pl-4 align-middle font-italic">User</td>
+        </tr>
+        <tr th:each="player: ${players}">
+            <td class="pl-4 align-middle font-weight-bold" th:text="${players.indexOf(player)+1}+'.'"/>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${player.name}"/>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${player.surname}"/>
+            <td class="pl-4 align-middle font-weight-bold" align="center">
+                <span th:if="${player.number}==0">-</span>
+                <span th:unless="${player.number}==0" th:text="${player.number}"></span>
+            </td>
+            <td class="pl-4 align-middle font-weight-bold">
+                <span th:if="${player.team}==null">-</span>
+                <span th:unless="${player.team}==null" th:text="${player.team}"></span>
+            </td>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${player.user.userName}"/>
+        </tr>
+        </tbody>
+    </table>
+    <div class="align-middle font-italic" align="center">
+        <span th:if="${players.size()}==0">No results</span>
+    </div>
+    <br>
+
+    <table class="table table-striped ">
+        <thead class="thead-dark">
+        <tr align="center">
+            <th class="text-center" colspan="7">Users</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="pl-4 align-middle font-italic">#</td>
+            <td class="pl-4 align-middle font-italic">Username</td>
+            <td class="pl-4 align-middle font-italic">Status</td>
+            <td class="pl-4 align-middle font-italic">Name</td>
+        </tr>
+        <tr th:each="user: ${users}">
+            <td class="pl-4 align-middle font-weight-bold" th:text="${users.indexOf(user)+1}+'.'"/>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${user.userName}"/>
+            <td class="pl-4 align-middle font-weight-bold">
+                <span class="badge badge-success" th:if="${user.isActive()}">Active</span>
+                <span class="badge badge-danger" th:unless="${user.isActive()}">Inactive</span>
+            </td>
+            <td class="pl-4 align-middle font-weight-bold" th:text="${user.name}"/>
+        </tr>
+        </tbody>
+    </table>
+    <div class="align-middle font-italic" align="center">
+        <span th:if="${users.size()}==0">No results</span>
+    </div>
+    <br>
+
+</div>
+
+</body>
+</html>

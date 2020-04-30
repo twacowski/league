@@ -81,5 +81,8 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.getMostRedCards(league.getId());
     }
 
-
+    @Override
+    public List<Player> searchPlayersByPhrase(String phrase) {
+        return playerRepository.findPlayersByPhrase(phrase);
+    }
 }

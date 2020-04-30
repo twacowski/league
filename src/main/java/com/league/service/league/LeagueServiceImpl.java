@@ -187,5 +187,18 @@ public class LeagueServiceImpl implements LeagueService {
         return standings;
     }
 
+    @Override
+    public List<League> searchLeaguesByPhrase(String phrase) {
+        return leagueRepository.findLeaguesByPhrase(phrase);
+    }
 
+    @Override
+    public List<League> getPopularLeagues() {
+        return leagueRepository.findTop10ByOrderByNumberDesc();
+    }
+
+    @Override
+    public List<League> getLatestLeagues() {
+        return leagueRepository.findTop10ByOrderByIdDesc();
+    }
 }

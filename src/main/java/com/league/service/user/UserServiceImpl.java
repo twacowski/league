@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(int userId) {
         userRepository.deleteById(userId);
     }
+
+    @Override
+    public List<User> searchUsersByPhrase(String phrase) {
+        return userRepository.findUsersByPhrase(phrase);
+    }
 }

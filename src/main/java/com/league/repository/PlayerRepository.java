@@ -1,6 +1,5 @@
 package com.league.repository;
 
-import com.league.model.League;
 import com.league.model.Player;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,4 +26,7 @@ public interface PlayerRepository extends PagingAndSortingRepository<Player, Int
 
     @Query("SELECT p FROM Player p WHERE p.team.league.id=:leagueId AND p.redCards > 0 order by p.redCards desc")
     List<Player> getMostRedCards(@Param("leagueId") int leagueId);
+
+    @Query("SELECT p FROM Player p WHERE p.name LIKE %:phrase%")
+    List<Player> findPlayersByPhrase(@Param("phrase") String phrase);
 }

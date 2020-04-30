@@ -61,5 +61,8 @@ public class TeamServiceImpl implements TeamService {
         return teamRepository.getTeamsByLeagueId(id);
     }
 
-
+    @Override
+    public List<Team> searchTeamsByPhrase(String phrase) {
+        return teamRepository.findTeamsByPhrase(phrase);
+    }
 }

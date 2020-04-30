@@ -13,5 +13,6 @@ public interface TeamService {
     Team findById(int id);
     List<Team> getUserTeams();
     List<Team> getLeagueTeams(int leagueId);
+    List<Team> searchTeamsByPhrase(String phrase);
 
 }
