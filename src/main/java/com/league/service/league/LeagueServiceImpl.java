@@ -201,4 +201,20 @@ public class LeagueServiceImpl implements LeagueService {
     public List<League> getLatestLeagues() {
         return leagueRepository.findTop10ByOrderByIdDesc();
     }
+
+    @Override
+    public List<League> getAllLeagues() {
+        return leagueRepository.findAll();
+    }
+
+    @Override
+    public List<League> getLeaguesByLocation(Voivodeship voivodeship, County county) {
+        if(county != null) {
+            voivodeship = county.getVoivodeship();
+            return leagueRepository.findLeaguesByLocation(voivodeship.getId(), county.getId());
+        } else if (voivodeship != null) {
+            return leagueRepository.findLeaguesByVoivodeship(voivodeship.getId());
+        }
+        return leagueRepository.findAll();
+    }
 }

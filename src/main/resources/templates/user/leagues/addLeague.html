@@ -87,13 +87,13 @@
             <script type="text/javascript">
                 $("#voivodeship").on("change", function(){
                     var selectedValue = $(this).children("option:selected").val();
-                    var url = "/user/leagues/getStateCityValues?" + $.param({"voivodeship": selectedValue});
+                    var url = "/getCountiesFromVoivodeship?" + $.param({"voivodeship": selectedValue});
                     var $countySelect = $("#county");
                     fetch(url).then(function (response) {
                       response.json().then(function (value) {
                          var jsonik = Object.keys(value);
                           $countySelect.empty();
-                          $countySelect.append("<option value=\"" + null + "\">" + "-----" + "</option>");
+                          $countySelect.append("<option value=\"" + 0 + "\">" + "-----" + "</option>");
                           jsonik.forEach(function (key) {
                               var option = "<option value=\"" + key + "\">" + value[key] + "</option>";
                               $countySelect.append(option);

@@ -46,12 +46,6 @@ public class LeagueController {
         return "user/leagues/addLeague";
     }
 
-    @GetMapping("/getStateCityValues")
-    @ResponseBody
-    public ResponseEntity<?> getStateCountyValues(@RequestParam("voivodeship") Voivodeship voivodeship) {
-        return ResponseEntity.ok(locationService.getCountiesFromVoivodeship(voivodeship));
-    }
-
     @PostMapping("addLeagueProceed")
     public String addTeamLeague(@ModelAttribute("league") League league) {
         league.setStatus(Status.INACTIVE);

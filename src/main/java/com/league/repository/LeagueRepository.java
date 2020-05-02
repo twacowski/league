@@ -14,4 +14,10 @@ public interface LeagueRepository extends JpaRepository<League, Integer> {
 
     @Query("SELECT l FROM League l WHERE l.name LIKE %:phrase%")
     List<League> findLeaguesByPhrase(@Param("phrase") String phrase);
+
+    @Query("SELECT l FROM League l WHERE l.voivodeship.id=:voivodeship AND l.county.id=:county")
+    List<League> findLeaguesByLocation(@Param("voivodeship") int voivodeship, @Param("county") int county);
+
+    @Query("SELECT l FROM League l WHERE l.voivodeship.id=:voivodeship")
+    List<League> findLeaguesByVoivodeship(@Param("voivodeship") int voivodeship);
 }

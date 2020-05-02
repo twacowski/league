@@ -16,7 +16,7 @@
 <div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
     <div class="container d-flex" align="center">
         <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Competitions Base</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Competitions Base</a>
         <form class="ml-auto form-inline my-2 my-lg-0" action="#" th:action="@{/search}" method="GET">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -28,8 +28,8 @@
 
 <div class="container" align="center">
 
-    <h1><b>Witamy na stronie nazwa_strony!</b></h1>
-    <h3>darmowym serwisie do zarządzania rozgrywkami sportowymi</h3>
+    <h1><b>Welcome on the website!</b></h1>
+    <h3>providing free aplication to managing sport competions</h3>
     <br>
 
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -81,7 +81,7 @@
                 </tbody>
             </table>
             <div class="container w-50 p-3">
-                <a th:href="@{/registration}" class="btn btn-info btn-block" role="button" aria-pressed="true">More</a>
+                <a th:href="@{/competitionsBase}" class="btn btn-info btn-block" role="button" aria-pressed="true">More</a>
             </div>
         </div>
 
@@ -101,7 +101,7 @@
                 </tbody>
             </table>
             <div class="container w-50 p-3">
-                <a th:href="@{/registration}" class="btn btn-info btn-block" role="button" aria-pressed="true">More</a>
+                <a th:href="@{/competitionsBase}" class="btn btn-info btn-block" role="button" aria-pressed="true">More</a>
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script th:src="@{/webjars/jquery/3.5.0/jquery.js}"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -37,7 +38,71 @@
 
 <div class="container" align="center">
 
-    <h3>Results of searching</h3>
+    <form th:action="@{/competitionsBase}" method="POST">
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Voivodeship</label>
+            <div class="col-sm-9">
+                <select class="form-control px-2" th:id="voivodeship" th:name="voivodeship">
+                    <div>
+                    <span th:if="${voivodeship}==null">
+                        <option th:value="0">-----</option>
+                        <option th:each="voivodeshipOpt : ${voivodeships}"
+                                th:value="${voivodeshipOpt.id}" th:text="${voivodeshipOpt.name}"></option>
+                    </span>
+                    <span th:unless="${voivodeship}==null">
+                        <option th:value="0" >-----</option>
+                        <option th:each="voivodeshipOpt : ${voivodeships}" th:selected="${voivodeshipOpt==voivodeship}"
+                                th:value="${voivodeshipOpt.id}" th:text="${voivodeshipOpt.name}"></option>
+                    </span></div>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label">County</label>
+            <div class="col-sm-9">
+                <select class="form-control px-2" th:id="county" th:name="county">
+                    <div>
+                        <span th:if="${county}==null">
+                            <option th:value="0">-----</option>
+                            <option th:each="countyOpt : ${counties}"
+                                    th:value="${countyOpt.id}" th:text="${countyOpt.name}"></option>
+                        </span>
+                        <span th:unless="${county}==null">
+                            <option th:value="0" >-----</option>
+                            <option th:each="countyOpt : ${counties}" th:selected="${countyOpt==county}"
+                                    th:value="${countyOpt.id}" th:text="${countyOpt.name}"></option>
+                        </span></div>
+                </select>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $("#voivodeship").on("change", function () {
+                var selectedValue = $(this).children("option:selected").val();
+                var url = "/getCountiesFromVoivodeship?" + $.param({"voivodeship": selectedValue});
+                var $countySelect = $("#county");
+                fetch(url).then(function (response) {
+                    response.json().then(function (value) {
+                        var jsonik = Object.keys(value);
+                        $countySelect.empty();
+                        $countySelect.append("<option value=\"" + 0 + "\">" + "-----" + "</option>");
+                        jsonik.forEach(function (key) {
+                            var option = "<option value=\"" + key + "\">" + value[key] + "</option>";
+                            $countySelect.append(option);
+                        })
+                    })
+                })
+
+            })
+        </script>
+        <div class="d-flex">
+            <a class="btn btn-secondary ml-3 my-1" th:href="@{/}">back to Main Page</a>
+            <a class="btn btn-secondary btn-lg ml-auto mr-3" th:href="@{/competitionsBase}">reset</a>
+            <button type="submit" class="btn btn-primary btn-lg mr-3">Show Results</button>
+        </div>
+    </form>
+
     <br>
 
     <table class="table table-striped ">
@@ -63,7 +128,8 @@
                 <span class="badge badge-danger" th:case="${T(com.league.model.enums.Status).INACTIVE}">Inactive</span>
                 <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Open to register</span>
                 <span class="badge badge-success" th:case="${T(com.league.model.enums.Status).ACTIVE}">Active</span>
-                <span class="badge badge-secondary" th:case="${T(com.league.model.enums.Status).ARCHIVED}">Archived</span>
+                <span class="badge badge-secondary"
+                      th:case="${T(com.league.model.enums.Status).ARCHIVED}">Archived</span>
             </td>
             <td class="pl-4 align-middle font-weight-bold">
                 <span th:if="${league.voivodeship}==null">-</span>
@@ -73,102 +139,14 @@
                 <span th:if="${league.county}==null">-</span>
                 <span th:unless="${league.county}==null" th:text="${league.county.name}"></span>
             </td>
-            <td class="pl-4 align-middle font-weight-bold" align="center" th:text="${league.teams.size()}+' / '+${league.number}"/>
+            <td class="pl-4 align-middle font-weight-bold" align="center"
+                th:text="${league.teams.size()}+' / '+${league.number}"/>
             <td class="pl-4 align-middle font-weight-bold" th:text="${league.user.userName}"/>
         </tr>
         </tbody>
     </table>
     <div class="align-middle font-italic" align="center">
         <span th:if="${leagues.size()}==0">No results</span>
-    </div>
-    <br>
-
-    <table class="table table-striped ">
-        <thead class="thead-dark">
-        <tr align="center">
-            <th class="text-center" colspan="3">Teams</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="pl-4 align-middle font-italic">#</td>
-            <td class="pl-4 align-middle font-italic">Team Name</td>
-            <td class="pl-4 align-middle font-italic">User</td>
-        </tr>
-        <tr th:each="team: ${teams}">
-            <td class="pl-4 align-middle font-weight-bold" th:text="${teams.indexOf(team)+1}+'.'"/>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${team.name}"/>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${team.user.userName}"/>
-        </tr>
-        </tbody>
-    </table>
-    <div class="align-middle font-italic" align="center">
-        <span th:if="${teams.size()}==0">No results</span>
-    </div>
-    <br>
-
-    <table class="table table-striped ">
-        <thead class="thead-dark">
-        <tr align="center">
-            <th class="text-center" colspan="10">Players</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="pl-4 align-middle font-italic">#</td>
-            <td class="pl-4 align-middle font-italic">Name</td>
-            <td class="pl-4 align-middle font-italic">Surname</td>
-            <td class="pl-4 align-middle font-italic" align="center">Number</td>
-            <td class="pl-4 align-middle font-italic">Team</td>
-            <td class="pl-4 align-middle font-italic">User</td>
-        </tr>
-        <tr th:each="player: ${players}">
-            <td class="pl-4 align-middle font-weight-bold" th:text="${players.indexOf(player)+1}+'.'"/>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${player.name}"/>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${player.surname}"/>
-            <td class="pl-4 align-middle font-weight-bold" align="center">
-                <span th:if="${player.number}==0">-</span>
-                <span th:unless="${player.number}==0" th:text="${player.number}"></span>
-            </td>
-            <td class="pl-4 align-middle font-weight-bold">
-                <span th:if="${player.team}==null">-</span>
-                <span th:unless="${player.team}==null" th:text="${player.team}"></span>
-            </td>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${player.user.userName}"/>
-        </tr>
-        </tbody>
-    </table>
-    <div class="align-middle font-italic" align="center">
-        <span th:if="${players.size()}==0">No results</span>
-    </div>
-    <br>
-
-    <table class="table table-striped ">
-        <thead class="thead-dark">
-        <tr align="center">
-            <th class="text-center" colspan="7">Users</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="pl-4 align-middle font-italic">#</td>
-            <td class="pl-4 align-middle font-italic">Username</td>
-            <td class="pl-4 align-middle font-italic">Status</td>
-            <td class="pl-4 align-middle font-italic">Name</td>
-        </tr>
-        <tr th:each="user: ${users}">
-            <td class="pl-4 align-middle font-weight-bold" th:text="${users.indexOf(user)+1}+'.'"/>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${user.userName}"/>
-            <td class="pl-4 align-middle font-weight-bold">
-                <span class="badge badge-success" th:if="${user.isActive()}">Active</span>
-                <span class="badge badge-danger" th:unless="${user.isActive()}">Inactive</span>
-            </td>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${user.name}"/>
-        </tr>
-        </tbody>
-    </table>
-    <div class="align-middle font-italic" align="center">
-        <span th:if="${users.size()}==0">No results</span>
     </div>
     <br>
 

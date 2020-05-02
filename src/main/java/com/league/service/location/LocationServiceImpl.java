@@ -31,14 +31,29 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Map<County, String> getCountiesFromVoivodeship(Voivodeship voivodeship) {
+    public Map<Integer, String> getCountiesFromVoivodeship(Voivodeship voivodeship) {
+        if(voivodeship == null) {
+            List<County> counties = countyRepository.findByOrderByName();
+            Map<Integer, String> countyValues = new HashMap<>();
+            for(County county : counties){
+                countyValues.put(county.getId(), county.getName());
+            }
+            return countyValues;
+        }
         List<County> counties = countyRepository.findAllByVoivodeshipId(voivodeship.getId());
-        System.out.println(counties.size());
-        Map<County, String> countyValues = new HashMap<>();
+        Map<Integer, String> countyValues = new HashMap<>();
         for(County county : counties){
-            countyValues.put(county, county.getName());
+            countyValues.put(county.getId(), county.getName());
         }
 
         return countyValues;
+    }
+
+    @Override
+    public List<County> getListOfCountiesFromVoivodeship(Voivodeship voivodeship) {
+        if(voivodeship == null) {
+            return countyRepository.findByOrderByName();
+        }
+        return countyRepository.findAllByVoivodeshipId(voivodeship.getId());
     }
 }
