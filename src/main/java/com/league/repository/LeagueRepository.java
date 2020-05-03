@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface LeagueRepository extends JpaRepository<League, Integer> {
-    List<League> getLeaguesByUserName(String username);
+    List<League> getLeaguesByUserNameOrderByIdDesc(String username);
     List<League> findTop10ByOrderByIdDesc();
     List<League> findTop10ByOrderByNumberDesc();
 

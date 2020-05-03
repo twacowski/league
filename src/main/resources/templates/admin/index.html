@@ -13,9 +13,15 @@
 <div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
     <div class="container d-flex" align="center">
         <a class="btn btn-dark font-weight-bold" th:href="@{/user/index}">Home</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Competitions Base</a>
         <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
         <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
         <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+        <form class="ml-auto form-inline my-2 my-lg-0" action="#" th:action="@{/search}" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
         <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
     </div>
 </div>

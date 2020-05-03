@@ -44,7 +44,7 @@ public class LeagueServiceImpl implements LeagueService {
     @Override
     public List<League> getUserLeagues() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<League> leagues = leagueRepository.getLeaguesByUserName(auth.getName());
+        List<League> leagues = leagueRepository.getLeaguesByUserNameOrderByIdDesc(auth.getName());
         return leagues;
     }
 

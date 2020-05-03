@@ -1,20 +1,17 @@
 package com.league.controller;
 
 import com.league.model.League;
-import com.league.model.Team;
 import com.league.model.enums.Status;
-import com.league.model.Voivodeship;
 import com.league.service.league.LeagueService;
 import com.league.service.location.LocationService;
 import com.league.service.player.PlayerService;
 import com.league.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("user/leagues")
@@ -55,14 +52,24 @@ public class LeagueController {
 
     @GetMapping("manageLeague")
     public String manageLeague(@RequestParam("leagueId") int leagueId, Model model) {
-        List<Team> teams = teamService.getLeagueTeams(leagueId);
-        model.addAttribute("teams", teams);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         League league = leagueService.findById(leagueId);
-        model.addAttribute("league", league);
-        if(!league.isStarted()) {
-            return "user/leagues/manageLeague";
+        System.out.println(league.getUser().getUserName() + auth.getName());
+        if (!league.getUser().getUserName().equals(auth.getName()) || league.getStatus() == Status.ARCHIVED) {
+            return "accessDenied";
         }
-        return "redirect:/user/leagues/manageActiveLeague?leagueId=" + leagueId;
+
+        if (league.getStatus() == Status.ACTIVE) {
+            return "redirect:/user/leagues/manageActiveLeague?leagueId=" + leagueId;
+        }
+
+        model.addAttribute("teams", teamService.getLeagueTeams(leagueId));
+        model.addAttribute("league", league);
+        model.addAttribute("voivodeships", locationService.getListOfVoivodeships());
+        model.addAttribute("counties", locationService.getListOfCountiesFromVoivodeship(league.getVoivodeship()));
+
+        return "user/leagues/manageLeague";
     }
 
     @PostMapping("manageLeagueProceed")
@@ -73,6 +80,11 @@ public class LeagueController {
 
     @GetMapping("deleteLeague")
     public String deleteLeagueProceed(@RequestParam("leagueId") int leagueId) {
+        League league = leagueService.findById(leagueId);
+        if (league.getStatus() == Status.ARCHIVED || league.getStatus() == Status.ACTIVE) {
+            return "redirect:/user/leagues/myLeagues";
+        }
+
         leagueService.deleteLeague(leagueId);
         return "redirect:/user/leagues/myLeagues";
     }
@@ -80,7 +92,7 @@ public class LeagueController {
     @GetMapping("startLeague")
     public String startLeague(@RequestParam("leagueId") int leagueId, Model model) {
         League league = leagueService.findById(leagueId);
-        if(league.isStarted() || league.numberOfTeams()<2) {
+        if (league.isStarted() || league.numberOfTeams() < 2) {
             //TODO stworzyc endpoint dla tego erroru
             return "redirect:/user/leagues/myLeagues";
         }
