@@ -91,26 +91,35 @@
         <thead class="thead-dark">
         <tr>
             <th class="pl-4"> League Name </th>
-            <th class="text-center"> Teams </th>
+            <th class="text-center"> Team </th>
             <th class="text-center"> Status </th>
             <th class="text-center"> Actions </th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="league: ${leagues}">
-            <td class="pl-4 align-middle font-weight-bold" th:text="${league.name}" />
-            <td class="align-middle" align="center" th:text="${league.numberOfTeams()}" />
-            <td class="align-middle" align="center" th:switch="${league.status}">
-                <span class="badge badge-danger" th:case="${T(com.league.model.enums.Status).INACTIVE}">Inactive</span>
-                <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Open to register</span>
-                <span class="badge badge-success" th:case="${T(com.league.model.enums.Status).ACTIVE}">Active</span>
-                <span class="badge badge-secondary" th:case="${T(com.league.model.enums.Status).ARCHIVED}">Archived</span>
-            </td>
-            <td class="align-middle" style="width: 400px" align="center">
-                <a class="btn btn-info mx-1" th:href="@{/view/league(leagueId=${league.id})}">Open View</a>
-            </td>
-        </tr>
+        <span th:if="${participations.isEmpty()}">
+            <tr><td align="center" colspan="4">No results</td></tr>
+        </span>
+        <span th:unless="${participations.isEmpty()}">
+            <tr th:each="participation: ${participations}">
+                <td class="pl-4 align-middle font-weight-bold" th:text="${participation.league.name}" />
+                <td class="align-middle" align="center" th:text="${participation.team}" />
+                <td class="align-middle" align="center">
+                    <span class="badge badge-warning" th:if="${!participation.accepted and participation.league.status == T(com.league.model.enums.Status).TOREGISTER}">Waiting for agreement</span>
+                    <span class="badge badge-primary" th:if="${participation.accepted and participation.league.status == T(com.league.model.enums.Status).TOREGISTER}">Accepted</span>
+                    <span class="badge badge-success" th:if="${participation.league.status == T(com.league.model.enums.Status).ACTIVE}">Active competition</span>
+                    <span class="badge badge-secondary" th:if="${participation.league.status == T(com.league.model.enums.Status).ARCHIVED}">Waiting for agreement</span>
+                </td>
+                <td class="align-middle" style="width: 400px" align="center">
+                    <a class="btn btn-info mx-1" th:href="@{/view/league(leagueId=${participation.league.id})}">Details</a>
+                    <span th:if="${participation.league.status == T(com.league.model.enums.Status).TOREGISTER}">
+                        <a class="btn btn-danger mx-1" th:href="@{/user/leagues/cancelParticipation(leagueId=${participation.league.id})}"
+                           onclick="if (!(confirm('Are you sure you want to cancel your participation in this competition?'))) return false">Cancel</a>
+                    </span>
+                </td>
+            </tr>
+        </span>
         </tbody>
     </table>
 

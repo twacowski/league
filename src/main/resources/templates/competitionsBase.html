@@ -37,6 +37,7 @@
 </div>
 
 <div class="container" align="center">
+    <br>
 
     <form th:action="@{/competitionsBase}" method="POST">
 
@@ -98,8 +99,8 @@
         </script>
         <div class="d-flex">
             <a class="btn btn-secondary ml-3 my-1" th:href="@{/}">back to Main Page</a>
-            <a class="btn btn-secondary btn-lg ml-auto mr-3" th:href="@{/competitionsBase}">reset</a>
-            <button type="submit" class="btn btn-primary btn-lg mr-3">Show Results</button>
+            <a class="btn btn-secondary ml-auto my-1 mr-3" th:href="@{/competitionsBase}">reset</a>
+            <button type="submit" class="btn btn-primary mr-3">Show Results</button>
         </div>
     </form>
 
@@ -108,22 +109,23 @@
     <table class="table table-striped ">
         <thead class="thead-dark">
         <tr align="center">
-            <th class="text-center" colspan="7"> Leagues</th>
+            <th class="text-center" colspan="8"> Leagues</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td class="pl-4 align-middle font-italic">#</td>
-            <td class="pl-4 align-middle font-italic">League Name</td>
+            <td class="align-middle font-italic">League Name</td>
             <td class="pl-4 align-middle font-italic">Status</td>
             <td class="pl-4 align-middle font-italic">Voivodeship</td>
             <td class="pl-4 align-middle font-italic">County</td>
-            <td class="pl-4 align-middle font-italic" align="center">Teams / Excpected Teams</td>
+            <td class="pl-4 align-middle font-italic">Teams</td>
             <td class="pl-4 align-middle font-italic">User</td>
+            <td class="align-middle font-italic" align="center">Action</td>
         </tr>
         <tr th:each="league: ${leagues}">
             <td class="pl-4 align-middle font-weight-bold" th:text="${leagues.indexOf(league)+1}+'.'"/>
-            <td class="pl-4 align-middle font-weight-bold" th:text="${league.name}"/>
+            <td class="align-middle font-weight-bold" th:text="${league.name}"/>
             <td class="pl-4 align-middle font-weight-bold" th:switch="${league.status}">
                 <span class="badge badge-danger" th:case="${T(com.league.model.enums.Status).INACTIVE}">Inactive</span>
                 <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Open to register</span>
@@ -139,9 +141,12 @@
                 <span th:if="${league.county}==null">-</span>
                 <span th:unless="${league.county}==null" th:text="${league.county.name}"></span>
             </td>
-            <td class="pl-4 align-middle font-weight-bold" align="center"
+            <td class="align-middle font-weight-bold" align="center"
                 th:text="${league.teams.size()}+' / '+${league.number}"/>
             <td class="pl-4 align-middle font-weight-bold" th:text="${league.user.userName}"/>
+            <td>
+                <a class="btn btn-sm btn-primary" th:href="@{/view/league(leagueId=${league.id})}">Details</a>
+            </td>
         </tr>
         </tbody>
     </table>

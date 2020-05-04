@@ -2,7 +2,9 @@ package com.league.controller;
 
 import com.league.model.League;
 import com.league.model.Match;
+import com.league.model.Participation;
 import com.league.model.Team;
+import com.league.model.enums.Status;
 import com.league.service.league.LeagueService;
 import com.league.service.match.MatchService;
 import com.league.service.player.PlayerService;
@@ -38,7 +40,18 @@ public class ViewController {
     @GetMapping("league")
     public String league(@RequestParam("leagueId") int leagueId, Model model) {
         League league = leagueService.findById(leagueId);
+        List<Team> teams = league.getTeams();
+        List<Participation> participations = league.getParticipationList();
+        Team team = leagueService.participatingTeam(participations);
+
+        model.addAttribute("team", team);
         model.addAttribute("league", league);
+        model.addAttribute("teams", teams);
+
+        if(league.getStatus() == Status.TOREGISTER) {
+            return "view/leagueInfo";
+        }
+
         model.addAttribute("standings", leagueService.getStandings(league));
         return "/view/league";
     }

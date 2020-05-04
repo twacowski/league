@@ -170,4 +170,16 @@ public class Team {
     }
 
     public int numberOfPlayers() { return players.size();}
+
+    public List<Participation> getParticipationList() {
+        return participationList;
+    }
+
+    public void setParticipationList(List<Participation> participationList) {
+        this.participationList = participationList;
+    }
+
+    public void cancelParticipation(Participation participation) {
+        this.participationList.remove(participation);
+    }
 }

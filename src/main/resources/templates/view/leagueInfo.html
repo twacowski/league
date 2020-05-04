@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Match details page</title>
+</head>
+<body>
+<div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
+    <div class="container d-flex" align="center">
+        <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Competitions Base</a>
+        <a sec:authorize="isAuthenticated()">
+            <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
+            <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
+            <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
+        </a>
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin
+            Panel</a>
+        <form class="ml-auto form-inline my-2 my-lg-0" action="#" th:action="@{/search}" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <a sec:authorize="isAuthenticated()">
+            <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+        </a>
+        <a sec:authorize="!isAuthenticated()">
+            <a class="btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
+            <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+        </a>
+    </div>
+</div>
+
+<div class="container" align="center">
+    <br>
+    <div style="width: 600px">
+        <div align="center">
+            <br>
+            <h1><a th:text="${league.name}"/></h1>
+        </div>
+        <table class="table table-borderless">
+            <tbody>
+            <tr>
+                <td class="lead align-middle font-weight-bold">Organizer:</td>
+                <td class="lead align-middle font-weight-bold" th:text="${league.user.userName}"/>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold">Type of competition:</td>
+                <td class="lead align-middle font-weight-bold" th:text="${league.type.getDisplayValue()}"/>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold">Season:</td>
+                <td class="lead align-middle font-weight-bold">
+                    <span th:if="${league.season}==0">-</span>
+                    <span th:unless="${league.season}==0" th:text="${league.season}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold">Expected number of teams:</td>
+                <td class="lead align-middle font-weight-bold" th:text="${league.number}"/>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold">Voivodeship:</td>
+                <td class="lead align-middle font-weight-bold">
+                    <span th:if="${league.voivodeship}==null">-</span>
+                    <span th:unless="${league.voivodeship}==null" th:text="${league.voivodeship.name}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold">County:</td>
+                <td class="lead align-middle font-weight-bold">
+                    <span th:if="${league.county}==null">-</span>
+                    <span th:unless="${league.county}==null" th:text="${league.county.name}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold">City:</td>
+                <td class="lead align-middle font-weight-bold">
+                    <span th:if="${league.city}==null">-</span>
+                    <span th:unless="${league.city}==null" th:text="${league.city}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold">Details:</td>
+                <td class="lead align-middle font-weight-bold">
+                    <span th:if="${league.details}==''">-</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="align-middle" colspan="2">
+                    <span th:unless="${league.details}==null" th:text="${league.details}"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <span th:if="${team} == null">
+            <div class="w-50 p-3">
+                <a th:href="@{/user/leagues/signUp(leagueId=${league.id})}" class="btn btn-success btn-lg btn-block"
+                   role="button" aria-pressed="true">Sign up my team</a>
+            </div>
+        </span>
+    </div>
+</div>
+
+<div class="container d-flex justify-content-center">
+    <div style="width: 750px">
+        <span th:unless="${team} == null">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td class="lead align-middle font-weight-bold" align="center"
+                        colspan="2">Your team connected with this competition:</td>
+                </tr>
+                <tr>
+                    <td class="lead align-middle font-weight-bold" align="center" th:text="${team.name}"/>
+                    <td align="center">
+                        <a class="btn btn-danger mx-1" th:href="@{/user/leagues/cancelParticipation(leagueId=${league.id})}"
+                           onclick="if (!(confirm('Are you sure you want to cancel your participation in this competition?'))) return false">Cancel</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </span>
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th class="pl-3">#</th>
+                <th>List of Teams</th>
+                <th>User</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="team: ${teams}">
+                <td class="pl-3 align-middle font-weight-bold" th:text="${teams.indexOf(team)+1}+'.'"/>
+                <td class="align-middle" th:text="${team.name}"/>
+                <td class="align-middle" th:text="${team.user.userName}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

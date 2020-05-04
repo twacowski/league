@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script th:src="@{/webjars/jquery/3.5.0/jquery.js}"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Match details page</title>
+</head>
+<body>
+<div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
+    <div class="container d-flex" align="center">
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/index}">Home</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Competitions Base</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+        <form class="ml-auto form-inline my-2 my-lg-0" action="#" th:action="@{/search}" method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+    </div>
+</div>
+
+<div class="container d-flex justify-content-center">
+    <div style="width: 750px">
+
+        <h1>You're trying to sign up to <a th:text="${participation.league.name}"/></h1>
+
+        <br>
+        <form action="#" th:action="@{/user/leagues/signUpProceed}"
+              th:object="${participation}" method="POST">
+
+            <div class="form-group row">
+                <input type="hidden" th:field="*{league}">
+                <label class="col-sm-3 col-form-label">Choose team you want to sign up:</label>
+                <div class="col-sm-9">
+                    <select class="form-control px-2" th:field="*{team}">
+                        <option th:each="team : ${teams}"
+                                th:value="${team.id}" th:text="${team.name}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex">
+                <a  class="btn btn-secondary my-1" th:href="@{/view/league(leagueId=${participation.league.id})}">back to League Details</a>
+                <button type="submit" class="btn btn-success btn-lg ml-auto">Sign Up My Team</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

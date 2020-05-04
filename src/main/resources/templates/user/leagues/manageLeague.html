@@ -135,17 +135,48 @@
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th class="pl-5">List of Teams</th>
+                <th class="pl-5" colspan="2">Enrollment</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="participation: ${league.participationList}">
+                <span th:if="${!participation.accepted}">
+                    <td class="pl-5 align-middle" th:text="${participation.team.name}" />
+                    <td class="pl-5 align-middle" th:text="${participation.team.user.userName}" />
+                    <td class="align-middle" align="center" style="width: 350px">
+                        <a class="btn btn-success mx-1" th:href="@{/user/leagues/acceptTeam(participationId=${participation.id})}">Accept</a>
+                        <a class="btn btn-danger" th:href="@{/user/leagues/rejectTeam(participationId=${participation.id})}"
+                           onclick="if (!(confirm('Are you sure you want to reject this team?'))) return false">Reject</a></td>
+                </span>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container d-flex justify-content-center">
+    <div style="width: 750px">
+        <br><br>
+
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th class="pl-5" colspan="2">List of accepted teams</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="team: ${teams}">
-                <td class="pl-5 align-middle" th:text="${team.name}" />
-                <td class="align-middle" align="center" style="width: 350px"><a class="btn btn-info mx-1" th:href="@{/user/manageTeam(teamId=${team.id})}">Manage Team</a>
-                    <a class="btn btn-danger" th:href="@{/user/deleteTeam(teamId=${team.id})}"
-                       onclick="if (!(confirm('Are you sure you want to delete this team from the league?'))) return false">Delete Team</a></td>
+            <tr th:each="participation: ${league.participationList}">
+                <span th:if="${participation.accepted}">
+                    <td class="pl-5 align-middle" th:text="${participation.team.name}" />
+                    <td class="pl-5 align-middle" th:text="${participation.team.user.userName}" />
+                    <td class="align-middle" align="center" style="width: 350px">
+                        <a class="btn btn-danger" th:href="@{/user/leagues/rejectTeam(participationId=${participation.id})}"
+                           onclick="if (!(confirm('Are you sure you want to delete this team from the league?'))) return false">Delete Team</a></td>
+                </span>
             </tr>
             </tbody>
         </table>

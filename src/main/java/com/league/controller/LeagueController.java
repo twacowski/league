@@ -1,6 +1,8 @@
 package com.league.controller;
 
 import com.league.model.League;
+import com.league.model.Participation;
+import com.league.model.Team;
 import com.league.model.enums.Status;
 import com.league.service.league.LeagueService;
 import com.league.service.location.LocationService;
@@ -12,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("user/leagues")
@@ -32,6 +36,7 @@ public class LeagueController {
     @GetMapping("myLeagues")
     public String myLeagues(Model model) {
         model.addAttribute("leagues", leagueService.getUserLeagues());
+        model.addAttribute("participations", leagueService.getAllUserParticipations());
         return "user/leagues/myLeagues";
     }
 
@@ -55,7 +60,6 @@ public class LeagueController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         League league = leagueService.findById(leagueId);
-        System.out.println(league.getUser().getUserName() + auth.getName());
         if (!league.getUser().getUserName().equals(auth.getName()) || league.getStatus() == Status.ARCHIVED) {
             return "accessDenied";
         }
@@ -87,6 +91,44 @@ public class LeagueController {
 
         leagueService.deleteLeague(leagueId);
         return "redirect:/user/leagues/myLeagues";
+    }
+
+    @GetMapping("signUp")
+    public String signUp(@RequestParam("leagueId") int leagueId, Model model) {
+        Participation participation = new Participation(leagueService.findById(leagueId));
+        List<Team> teams = teamService.getUserTeams();
+
+        model.addAttribute("participation", participation);
+        model.addAttribute("teams", teams);
+
+        return "user/leagues/signUp";
+    }
+
+    @PostMapping("signUpProceed")
+    public String signUp(@ModelAttribute("participation") Participation participation) {
+        leagueService.saveParticipation(participation);
+        return "redirect:/user/leagues/myLeagues";
+    }
+
+    @GetMapping("cancelParticipation")
+    public String cancelParticipation(@RequestParam("leagueId") int leagueId) {
+        leagueService.cancelParticipation(leagueService.findById(leagueId));
+
+        return "redirect:/user/leagues/myLeagues";
+    }
+
+    @GetMapping("acceptTeam")
+    public String acceptTeam(@RequestParam("participationId") int participationId) {
+        League league = leagueService.acceptTeam(participationId);
+
+        return "redirect:/user/leagues/manageLeague?leagueId=" + league.getId();
+    }
+
+    @GetMapping("rejectTeam")
+    public String rejectTeam(@RequestParam("participationId") int participationId) {
+        League league = leagueService.rejectTeam(participationId);
+
+        return "redirect:/user/leagues/manageLeague?leagueId=" + league.getId();
     }
 
     @GetMapping("startLeague")

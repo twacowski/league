@@ -2,6 +2,8 @@ package com.league.service.league;
 
 import com.league.model.*;
 import com.league.repository.LeagueRepository;
+import com.league.repository.ParticipationRepository;
+import com.league.repository.TeamRepository;
 import com.league.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,6 +23,12 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ParticipationRepository participationRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @Override
     public void saveLeague(League league) {
@@ -216,5 +225,74 @@ public class LeagueServiceImpl implements LeagueService {
             return leagueRepository.findLeaguesByVoivodeship(voivodeship.getId());
         }
         return leagueRepository.findAll();
+    }
+
+    @Override
+    public void saveParticipation(Participation participation) {
+        participationRepository.save(participation);
+    }
+
+    @Override
+    public List<Participation> getAllUserParticipations() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        List<Team> teams = teamRepository.getTeamsByUserName(auth.getName());
+        List<Participation> participations = new ArrayList<>();
+        for(Team team : teams) {
+            for(Participation participation : team.getParticipationList()) {
+                participations.add(participation);
+            }
+        }
+        Collections.sort(participations, Comparator.comparingInt(Participation::getId));
+        return participations;
+    }
+
+    @Override
+    public Team participatingTeam(List<Participation> participations) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth.getName().equals("anonymousUser")) {
+            return null;
+        }
+
+        User user = userService.findByUsername(auth.getName());
+
+        for(Participation participation : participations) {
+            if(user.getId() == participation.getTeam().getUser().getId()) {
+                return participation.getTeam();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void cancelParticipation(League league) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+
+        for(Participation participation : league.getParticipationList()) {
+            if(user.getId() == participation.getTeam().getUser().getId()) {
+                int id = participation.getId();
+                league.cancelParticipation(participation);
+                participation.getTeam().cancelParticipation(participation);
+                participationRepository.deleteById(id);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public League acceptTeam(int participationId) {
+        Participation participation = participationRepository.findById(participationId).get();
+        participation.setAccepted(true);
+        participationRepository.save(participation);
+        return participation.getLeague();
+    }
+
+    @Override
+    public League rejectTeam(int participationId) {
+        League league = participationRepository.findById(participationId).get().getLeague();
+        participationRepository.deleteById(participationId);
+        return league;
     }
 }

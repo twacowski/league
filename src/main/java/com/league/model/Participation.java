@@ -17,6 +17,7 @@ public class Participation {
     private int wins;
     private int draws;
     private int loses;
+    private boolean accepted;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -27,6 +28,13 @@ public class Participation {
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="team_id")
     private Team team;
+
+    public Participation() {
+    }
+
+    public Participation(League league) {
+        this.league = league;
+    }
 
     public int getId() {
         return id;
@@ -106,5 +114,13 @@ public class Participation {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }

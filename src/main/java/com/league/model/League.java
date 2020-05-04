@@ -19,6 +19,7 @@ public class League {
     private boolean enrollment;
     private String city;
     private int number;
+    private String details;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -205,5 +206,17 @@ public class League {
 
     public void setCounty(County county) {
         this.county = county;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public void cancelParticipation(Participation participation) {
+        this.participationList.remove(participation);
     }
 }

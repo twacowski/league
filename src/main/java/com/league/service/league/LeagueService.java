@@ -1,10 +1,8 @@
 package com.league.service.league;
 
-import com.league.model.County;
-import com.league.model.League;
-import com.league.model.Team;
-import com.league.model.Voivodeship;
+import com.league.model.*;
 
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 public interface LeagueService {
@@ -21,5 +19,11 @@ public interface LeagueService {
     List<League> getLatestLeagues();
     List<League> getAllLeagues();
     List<League> getLeaguesByLocation(Voivodeship voivodeship, County county);
+    void saveParticipation(Participation participation);
+    List<Participation> getAllUserParticipations();
+    Team participatingTeam(List<Participation> participations);
+    void cancelParticipation(League league);
+    League acceptTeam(int participationId);
+    League rejectTeam(int participationId);
 
 }
