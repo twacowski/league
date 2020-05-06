@@ -1,6 +1,7 @@
 package com.league.controller;
 
 import com.league.model.Match;
+import com.league.service.league.LeagueService;
 import com.league.service.match.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,9 @@ public class MatchController {
 
     @Autowired
     MatchService matchService;
+
+    @Autowired
+    LeagueService leagueService;
 
     @GetMapping("matchDetails")
     public String matchDetails(@RequestParam("matchId") int matchId, Model model) {

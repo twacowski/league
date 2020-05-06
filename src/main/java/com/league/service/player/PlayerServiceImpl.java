@@ -2,8 +2,10 @@ package com.league.service.player;
 
 import com.league.model.League;
 import com.league.model.Player;
+import com.league.model.Stat;
 import com.league.model.User;
 import com.league.repository.PlayerRepository;
+import com.league.repository.StatRepository;
 import com.league.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     PlayerRepository playerRepository;
+
+    @Autowired
+    StatRepository statRepository;
 
     @Autowired
     UserService userService;
@@ -50,35 +55,28 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> getUserPlayers() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<Player> list = playerRepository.getPlayersByUserName(auth.getName());
-        return list;
-    }
-
-    @Override
     public List<Player> getTeamPlayers(int id) {
         return playerRepository.getPlayersByTeamId(id);
     }
 
     @Override
-    public List<Player> getTopScorers(League league) {
-        return playerRepository.getTopScorers(league.getId());
+    public List<Stat> getTopScorers(League league) {
+        return statRepository.getTopScorers(league.getId());
     }
 
     @Override
-    public List<Player> getMostOwnGoals(League league) {
-        return playerRepository.getMostOwnGoals(league.getId());
+    public List<Stat> getMostOwnGoals(League league) {
+        return statRepository.getMostOwnGoals(league.getId());
     }
 
     @Override
-    public List<Player> getMostYellowCards(League league) {
-        return playerRepository.getMostYellowCards(league.getId());
+    public List<Stat> getMostYellowCards(League league) {
+        return statRepository.getMostYellowCards(league.getId());
     }
 
     @Override
-    public List<Player> getMostRedCards(League league) {
-        return playerRepository.getMostRedCards(league.getId());
+    public List<Stat> getMostRedCards(League league) {
+        return statRepository.getMostRedCards(league.getId());
     }
 
     @Override

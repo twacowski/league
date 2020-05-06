@@ -62,7 +62,7 @@ public class IndexController {
 
         userService.addUser(user);
 
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     @GetMapping("/search")

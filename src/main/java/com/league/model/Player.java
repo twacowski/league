@@ -33,6 +33,10 @@ public class Player {
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<ScoreSheet> scoreSheets;
 
+    @OneToMany(mappedBy="player", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Stat> stats;
+
 
     public Player() {
         this.number = 0;
@@ -127,4 +131,11 @@ public class Player {
         this.scoreSheets = scoreSheets;
     }
 
+    public List<Stat> getStats() {
+        return stats;
+    }
+
+    public void setStats(List<Stat> stats) {
+        this.stats = stats;
+    }
 }

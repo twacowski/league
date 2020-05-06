@@ -50,9 +50,9 @@
 
         <tbody>
         <tr align="center" th:each="team: ${standings}">
-            <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+."/>
-            <td align="left" style="width: 400px;" th:text="${team.name}"/>
-            <td style="width: 100px;" th:text="${team.numberOfMatches()}"/>
+            <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+." />
+            <td align="left" style="width: 400px;" th:text="${team.team.name}" />
+            <td style="width: 100px;" th:text="${team.getNumberOfMatches()}" />
             <td style="width: 100px;" th:text="${team.wins}"/>
             <td style="width: 100px;" th:text="${team.draws}"/>
             <td style="width: 100px;" th:text="${team.loses}"/>
@@ -106,8 +106,8 @@
         <tbody>
         <tr th:each="player: ${yellowCards}">
             <td class="align-middle" style="width: 90px;" align="center" th:text="${player.yellowCards}"/>
-            <td class="align-middle" style="width: 450px;" align="left" th:text="${player.surname}+' '+${player.name}"/>
-            <td class="align-middle" style="width: 350px;" align="left" th:text="${player.team.name}"/>
+            <td class="align-middle" style="width: 450px;" align="left" th:text="${player.player.surname}+' '+${player.player.name}"/>
+            <td class="align-middle" style="width: 350px;" align="left" th:text="${player.player.team.name}"/>
         </tr>
         </tbody>
     </table>

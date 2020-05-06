@@ -40,30 +40,6 @@ public class Team {
                     CascadeType.DETACH, CascadeType.REFRESH})
     private List<Participation> participationList;
 
-    @OneToMany(mappedBy = "host", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Match> hostMatches;
-
-    @OneToMany(mappedBy = "guest", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Match> guestMatches;
-
-    public List<Match> getHostMatches() {
-        return hostMatches;
-    }
-
-    public void setHostMatches(List<Match> hostMatches) {
-        this.hostMatches = hostMatches;
-    }
-
-    public List<Match> getGuestMatches() {
-        return guestMatches;
-    }
-
-    public void setGuestMatches(List<Match> guestMatches) {
-        this.guestMatches = guestMatches;
-    }
-
     public League getLeague() {
         return league;
     }

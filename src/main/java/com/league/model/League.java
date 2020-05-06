@@ -51,6 +51,10 @@ public class League {
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Participation> participationList;
 
+    @OneToMany(mappedBy="league", cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Participation> stats;
+
     @OneToMany(mappedBy="league", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<Gameweek> gameweeks;
@@ -214,6 +218,14 @@ public class League {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public List<Participation> getStats() {
+        return stats;
+    }
+
+    public void setStats(List<Participation> stats) {
+        this.stats = stats;
     }
 
     public void cancelParticipation(Participation participation) {

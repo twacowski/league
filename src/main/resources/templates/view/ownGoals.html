@@ -68,8 +68,8 @@
         <tbody>
         <tr th:each="player: ${ownGoals}">
             <td class="align-middle" style="width: 90px;" align="center" th:text="${player.ownGoals}"/>
-            <td class="align-middle" style="width: 450px;" align="left" th:text="${player.surname}+' '+${player.name}"/>
-            <td class="align-middle" style="width: 350px;" align="left" th:text="${player.team.name}"/>
+            <td class="align-middle" style="width: 450px;" align="left" th:text="${player.player.surname}+' '+${player.player.name}"/>
+            <td class="align-middle" style="width: 350px;" align="left" th:text="${player.player.team.name}"/>
         </tr>
         </tbody>
     </table>

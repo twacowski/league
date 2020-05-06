@@ -42,7 +42,7 @@
             <br>
             <div class="mb-3 row d-flex justify-content-center">
                 <div class="mx-4" style="width: 300px;">
-                    <h3 class="font-weight-bold" th:text="${match.host}"></h3>
+                    <h3 class="font-weight-bold" th:text="${match.host.team.name}"></h3>
                 </div>
 
                 <div class="mx-2 px-1" align="center" style="width: 60px;">
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="mx-4" style="width: 300px;">
-                    <h3 class="font-weight-bold" th:text="${match.guest}"></h3>
+                    <h3 class="font-weight-bold" th:text="${match.guest.team.name}"></h3>
                 </div>
             </div>
             <!--<input type="date" th:field="*{date}" >

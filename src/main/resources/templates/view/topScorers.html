@@ -68,8 +68,8 @@
         <tbody>
         <tr th:each="scorer: ${topScorers}">
             <td class="align-middle" style="width: 90px;" align="center" th:text="${scorer.goals}"/>
-            <td class="align-middle" style="width: 450px;" align="left" th:text="${scorer.surname}+' '+${scorer.name}"/>
-            <td class="align-middle" style="width: 350px;" align="left" th:text="${scorer.team.name}"/>
+            <td class="align-middle" style="width: 450px;" align="left" th:text="${scorer.player.surname}+' '+${scorer.player.name}"/>
+            <td class="align-middle" style="width: 350px;" align="left" th:text="${scorer.player.team.name}"/>
         </tr>
         </tbody>
     </table>

@@ -29,14 +29,16 @@ public class ScoreSheet {
     private int ownGoals;
     private int yellowCards;
     private int redCards;
+    private boolean host;
 
     public ScoreSheet() {
     }
 
-    public ScoreSheet(User user, Match match, Player player) {
+    public ScoreSheet(User user, Match match, Player player, boolean host) {
         this.user = user;
         this.match = match;
         this.player = player;
+        this.host = host;
     }
 
     public int getId() {
@@ -101,5 +103,13 @@ public class ScoreSheet {
 
     public void setRedCards(int redCards) {
         this.redCards = redCards;
+    }
+
+    public boolean isHost() {
+        return host;
+    }
+
+    public void setHost(boolean host) {
+        this.host = host;
     }
 }

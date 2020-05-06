@@ -2,6 +2,7 @@ package com.league.service.player;
 
 import com.league.model.League;
 import com.league.model.Player;
+import com.league.model.Stat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,11 +13,10 @@ public interface PlayerService {
     void savePlayer(Player player);
     void deletePlayer(int playerId);
     Player findById(int id);
-    List<Player> getUserPlayers();
     List<Player> getTeamPlayers(int id);
-    List<Player> getTopScorers(League league);
-    List<Player> getMostOwnGoals(League league);
-    List<Player> getMostYellowCards(League league);
-    List<Player> getMostRedCards(League league);
+    List<Stat> getTopScorers(League league);
+    List<Stat> getMostOwnGoals(League league);
+    List<Stat> getMostYellowCards(League league);
+    List<Stat> getMostRedCards(League league);
     List<Player> searchPlayersByPhrase(String phrase);
 }

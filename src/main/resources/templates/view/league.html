@@ -77,9 +77,9 @@
 
         <tbody>
         <tr align="center" th:each="team: ${standings}">
-            <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+."/>
-            <td align="left" style="width: 400px;" th:text="${team.name}"/>
-            <td style="width: 100px;" th:text="${team.numberOfMatches()}"/>
+            <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+." />
+            <td align="left" style="width: 400px;" th:text="${team.team.name}" />
+            <td style="width: 100px;" th:text="${team.getNumberOfMatches()}" />
             <td style="width: 100px;" th:text="${team.wins}"/>
             <td style="width: 100px;" th:text="${team.draws}"/>
             <td style="width: 100px;" th:text="${team.loses}"/>
@@ -110,11 +110,11 @@
                     <tr th:each="match: ${gameweek.matches}">
                         <td class="align-middle" style="width: 75px;" align="left" th:text="${match.date}"/>
                         <td class="align-middle" style="width: 75px;" align="left" th:text="${match.time}"/>
-                        <td class="align-middle" style="width: 250px;" align="right" th:text="${match.host}"/>
+                        <td class="align-middle" style="width: 250px;" align="right" th:text="${match.host.team.name}"/>
                         <td class="align-middle" style="width: 30px;" align="center" th:text="${match.hostScore}"/>
                         <td class="align-middle" style="width: 10px;" align="center"> :</td>
                         <td class="align-middle" style="width: 30px;" align="center" th:text="${match.guestScore}"/>
-                        <td class="align-middle" style="width: 250px;" align="left" th:text="${match.guest}"/>
+                        <td class="align-middle" style="width: 250px;" align="left" th:text="${match.guest.team.name}"/>
                         <td class="align-middle" style="width: 150px;" align="center">
                             <a th:href="@{/view/matchDetails(matchId=${match.id})}"
                                class="btn btn-primary btn-sm">Match Details</a></td>

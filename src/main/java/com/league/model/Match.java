@@ -1,9 +1,8 @@
 package com.league.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,20 +31,16 @@ public class Match {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "host_id")
-    private Team host;
+    private Participation host;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "guest_id")
-    private Team guest;
+    private Participation guest;
 
     @OneToMany(mappedBy = "match", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private List<ScoreSheet> hostScoreSheets;
-
-    @OneToMany(mappedBy = "match", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    private List<ScoreSheet> guestScoreSheets;
+    private List<ScoreSheet> scoreSheets;
 
 
     private Integer hostScore;
@@ -99,19 +94,19 @@ public class Match {
         this.gameweek = gameweek;
     }
 
-    public Team getHost() {
+    public Participation getHost() {
         return host;
     }
 
-    public void setHost(Team host) {
+    public void setHost(Participation host) {
         this.host = host;
     }
 
-    public Team getGuest() {
+    public Participation getGuest() {
         return guest;
     }
 
-    public void setGuest(Team guest) {
+    public void setGuest(Participation guest) {
         this.guest = guest;
     }
 
@@ -163,68 +158,82 @@ public class Match {
         isPlayed = played;
     }
 
+    public List<ScoreSheet> getScoreSheets() {
+        return this.scoreSheets;
+    }
 
-    //TODO EDIT THIS GETTERS AND SETTERS ----> TOO COMPLICATED!
+    public void setScoreSheets(List<ScoreSheet> scoreSheets) {
+        this.scoreSheets = scoreSheets;
+    }
+
     public List<ScoreSheet> getHostScoreSheets() {
-        for (int i = 0; i < hostScoreSheets.size(); i++) {
-            if (hostScoreSheets.get(i) == null || hostScoreSheets.get(i).getMatch() == null || hostScoreSheets.get(i).getPlayer() == null) {
-                break;
-            }
-            if (hostScoreSheets.get(i).getMatch().getGuest() == hostScoreSheets.get(i).getPlayer().getTeam()) {
-                hostScoreSheets.remove(i);
+        List<ScoreSheet> scoreSheets = getScoreSheets();
+        List<ScoreSheet> hostScoreSheets = new ArrayList<>();
+        if(scoreSheets == null) {
+            return hostScoreSheets;
+        }
+        for (ScoreSheet scoreSheet : scoreSheets) {
+            if(scoreSheet.isHost()) {
+                hostScoreSheets.add(scoreSheet);
             }
         }
-
         return hostScoreSheets;
     }
 
-    public void setHostScoreSheets(List<ScoreSheet> hostScoreSheets) {
-        if (hostScoreSheets == null) {
-            this.hostScoreSheets = hostScoreSheets;
+    public void setHostScoreSheets(List<ScoreSheet> hostScoresheets) {
+        List<ScoreSheet> scoreSheets = new ArrayList<>();
+        scoreSheets.addAll(getScoreSheets());
+        if(scoreSheets == null) {
+            this.scoreSheets = hostScoresheets;
             return;
-        } else {
-            for (int i = 0; i < hostScoreSheets.size(); i++) {
-                if (hostScoreSheets.get(i) == null) {
-                    break;
-                }
-                if (hostScoreSheets.get(i).getMatch().getGuest() == hostScoreSheets.get(i).getPlayer().getTeam()) {
-                    hostScoreSheets.remove(i);
-                }
+        } else if(scoreSheets.isEmpty()) {
+            this.scoreSheets = hostScoresheets;
+            return;
+        }
+        for (ScoreSheet scoreSheet : getScoreSheets()) {
+            if(scoreSheet.isHost()) {
+                scoreSheets.remove(scoreSheet);
             }
         }
-        this.hostScoreSheets = hostScoreSheets;
+        scoreSheets.addAll(hostScoresheets);
+        this.scoreSheets = scoreSheets;
     }
 
     public List<ScoreSheet> getGuestScoreSheets() {
-        for (int i = 0; i < guestScoreSheets.size(); i++) {
-            if (guestScoreSheets.get(i) == null || guestScoreSheets.get(i).getMatch() == null || guestScoreSheets.get(i).getPlayer() == null) {
-                break;
-            } else if (guestScoreSheets.get(i).getMatch().getHost().equals(guestScoreSheets.get(i).getPlayer().getTeam())) {
-                guestScoreSheets.remove(i);
+        List<ScoreSheet> scoreSheets = getScoreSheets();
+        List<ScoreSheet> guestScoreSheets = new ArrayList<>();
+        if(scoreSheets == null) {
+            return guestScoreSheets;
+        }
+        for (ScoreSheet scoreSheet : scoreSheets) {
+            if(!scoreSheet.isHost()) {
+                guestScoreSheets.add(scoreSheet);
             }
         }
-
         return guestScoreSheets;
     }
 
-    public void setGuestScoreSheets(List<ScoreSheet> guestScoreSheets) {
-        if (guestScoreSheets == null) {
-            this.guestScoreSheets = guestScoreSheets;
+    public void setGuestScoreSheets(List<ScoreSheet> guestScoresheets) {
+        List<ScoreSheet> scoreSheets = new ArrayList<>();
+        scoreSheets.addAll(getScoreSheets());
+        if(scoreSheets == null) {
+            this.scoreSheets = guestScoresheets;
             return;
-        } else {
-            for (int i = 0; i < guestScoreSheets.size(); i++) {
-                if (guestScoreSheets.get(i) == null) {
-                    break;
-                } else if (guestScoreSheets.get(i).getMatch().getHost() == guestScoreSheets.get(i).getPlayer().getTeam()) {
-                    guestScoreSheets.remove(i);
-                }
+        } else if(scoreSheets.isEmpty()) {
+            this.scoreSheets = guestScoresheets;
+            return;
+        }
+        for (ScoreSheet scoreSheet : getScoreSheets()) {
+            if(!scoreSheet.isHost()) {
+                scoreSheets.remove(scoreSheet);
             }
         }
-        this.guestScoreSheets = guestScoreSheets;
+        scoreSheets.addAll(guestScoresheets);
+        this.scoreSheets = scoreSheets;
     }
 
     public void switchHost() {
-        Team temp = host;
+        Participation temp = host;
         host = guest;
         guest = temp;
     }

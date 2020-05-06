@@ -1,6 +1,7 @@
 package com.league.service.league;
 
 import com.league.model.*;
+import com.league.model.enums.Status;
 import com.league.repository.LeagueRepository;
 import com.league.repository.ParticipationRepository;
 import com.league.repository.TeamRepository;
@@ -58,28 +59,60 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
+    public boolean isAbleToStart(int leagueId) {
+        League league = leagueRepository.findById(leagueId).get();
+        if(league.getStatus() == Status.ACTIVE || league.getStatus() == Status.ARCHIVED ||
+                league.getParticipationList().size() < 2 || !isOwner(leagueId)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void startLeague(League league) {
-        league.setStarted(true);
+        league.setStatus(Status.ACTIVE);
         createGameweeks(league);
         populateGameweeks(league);
         leagueRepository.save(league);
-        //TODO save league!
+    }
 
+    @Override
+    public void createGameweeks(League league) {
+        int numberOfGameweeks = league.getParticipationList().size();
+        if (numberOfGameweeks % 2 == 0) {
+            numberOfGameweeks--;
+        }
+        if (league.isRematch()) {
+            numberOfGameweeks *= 2;
+        }
+        int numberOfMatches = league.getParticipationList().size() / 2;
 
+        List<Gameweek> gameweeks = new ArrayList<>();
+
+        for (int i = 0; i < numberOfGameweeks; i++) {
+            Gameweek gameweek = new Gameweek(i + 1, league.getUser(), league);
+            List<Match> matches = new ArrayList<>();
+            for (int j = 0; j < numberOfMatches; j++) {
+                matches.add(new Match(league.getUser(), league, gameweek, false));
+            }
+            gameweek.setMatches(matches);
+            gameweeks.add(gameweek);
+        }
+        league.setGameweeks(gameweeks);
     }
 
     @Override
     public void populateGameweeks(League league) {
-        List<Team> teams = league.getTeams();
-        int numberOfTeams = teams.size();
-        Collections.shuffle(teams);
+        List<Participation> participations = league.getParticipationList();
+        int numberOfTeams = participations.size();
+        Collections.shuffle(participations);
         List<Gameweek> gameweeks = league.getGameweeks();
         List<Match> matches = gameweeks.get(0).getMatches();
         List<Match> previousMatches;
 
-        if(teams.size() == 2) {
-            matches.get(0).setHost(teams.get(0));
-            matches.get(0).setGuest(teams.get(1));
+        if(participations.size() == 2) {
+            matches.get(0).setHost(participations.get(0));
+            matches.get(0).setGuest(participations.get(1));
             if(league.isRematch()) {
                 matches = gameweeks.get(1).getMatches();
                 matches.get(0).switchHost();
@@ -91,8 +124,8 @@ public class LeagueServiceImpl implements LeagueService {
         int numberOfMatches = matches.size();
 
         for (int i = 0; i < numberOfMatches; i++) {
-            matches.get(i).setHost(teams.get(i));
-            matches.get(i).setGuest(teams.get(numberOfTeams - 1 - i));
+            matches.get(i).setHost(participations.get(i));
+            matches.get(i).setGuest(participations.get(numberOfTeams - 1 - i));
         }
 
         int numberOfGameweeks = gameweeks.size();
@@ -105,7 +138,7 @@ public class LeagueServiceImpl implements LeagueService {
             for (int i = 1; i < numberOfGameweeks; i++) {
                 previousMatches = gameweeks.get(i - 1).getMatches();
                 matches = gameweeks.get(i).getMatches();
-                matches.get(0).setHost(teams.get(0));
+                matches.get(0).setHost(participations.get(0));
                 matches.get(1).setHost(previousMatches.get(0).getGuest());
                 matches.get(0).setGuest(previousMatches.get(1).getGuest());
                 matches.get(numberOfMatches - 1).setGuest(previousMatches.get(numberOfMatches - 1).getHost());
@@ -115,7 +148,7 @@ public class LeagueServiceImpl implements LeagueService {
                 }
             }
         } else {
-            Team pauseTeam = teams.get(numberOfTeams/2);
+            Participation pauseTeam = participations.get(numberOfTeams/2);
             for (int i = 1; i < numberOfGameweeks; i++) {
                 previousMatches = gameweeks.get(i - 1).getMatches();
                 matches = gameweeks.get(i).getMatches();
@@ -151,37 +184,13 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public void createGameweeks(League league) {
-        int numberOfGameweeks = league.numberOfTeams();
-        if (numberOfGameweeks % 2 == 0) {
-            numberOfGameweeks--;
-        }
-        if (league.isRematch()) {
-            numberOfGameweeks *= 2;
-        }
-        int numberOfMatches = league.numberOfTeams() / 2;
-
-        List<Gameweek> gameweeks = new ArrayList<>();
-
-        for (int i = 0; i < numberOfGameweeks; i++) {
-            Gameweek gameweek = new Gameweek(i + 1, league.getUser(), league);
-            List<Match> matches = new ArrayList<>();
-            for (int j = 0; j < numberOfMatches; j++) {
-                matches.add(new Match(league.getUser(), league, gameweek, false));
-            }
-            gameweek.setMatches(matches);
-            gameweeks.add(gameweek);
-        }
-        league.setGameweeks(gameweeks);
-    }
-
-    @Override
-    public List<Team> getStandings(League league) {
-        List<Team> standings = league.getTeams();
+    public List<Participation> getStandings(League league) {
+        List<Participation> standings = league.getParticipationList();
+        int leagueSize = league.getParticipationList().size();
         int max = 0;
-        for (int i = 0; i < league.numberOfTeams(); i++) {
+        for (int i = 0; i < leagueSize; i++) {
             max = i;
-            for (int j = i + 1; j < league.numberOfTeams(); j++) {
+            for (int j = i + 1; j < leagueSize; j++) {
                 if (standings.get(max).getPoints() < standings.get(j).getPoints() ||
                         (standings.get(max).getPoints() == standings.get(j).getPoints() &&
                                 standings.get(max).getBalance() < standings.get(j).getBalance()) ||
@@ -271,7 +280,7 @@ public class LeagueServiceImpl implements LeagueService {
         User user = userService.findByUsername(auth.getName());
 
         for(Participation participation : league.getParticipationList()) {
-            if(user.getId() == participation.getTeam().getUser().getId()) {
+            if(user.getId() == participation.getTeam().getUser().getId() && league.getStatus() == Status.TOREGISTER) {
                 int id = participation.getId();
                 league.cancelParticipation(participation);
                 participation.getTeam().cancelParticipation(participation);
@@ -294,5 +303,38 @@ public class LeagueServiceImpl implements LeagueService {
         League league = participationRepository.findById(participationId).get().getLeague();
         participationRepository.deleteById(participationId);
         return league;
+    }
+
+    @Override
+    public void openRegistration(int leagueId) {
+        if(isOwner(leagueId)) {
+            League league = leagueRepository.findById(leagueId).get();
+            league.setStatus(Status.TOREGISTER);
+            leagueRepository.save(league);
+        }
+    }
+
+    @Override
+    public void toArchieve(int leagueId) {
+        if(isOwner(leagueId)) {
+            League league = leagueRepository.findById(leagueId).get();
+            league.setStatus(Status.ARCHIVED);
+            leagueRepository.save(league);
+        }
+    }
+
+    @Override
+    public Participation getParticipation(int leagueId, int teamId) {
+        return participationRepository.getParticipation(leagueId, teamId);
+    }
+
+    public boolean isOwner(int leagueId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        League league = leagueRepository.findById(leagueId).get();
+        if(user.getId() == league.getUser().getId()) {
+            return true;
+        }
+        return false;
     }
 }

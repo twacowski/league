@@ -1,6 +1,7 @@
 package com.league.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "participation")
@@ -28,6 +29,14 @@ public class Participation {
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="team_id")
     private Team team;
+
+    @OneToMany(mappedBy = "host", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Match> hostMatches;
+
+    @OneToMany(mappedBy = "guest", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Match> guestMatches;
 
     public Participation() {
     }
@@ -122,5 +131,25 @@ public class Participation {
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public int getNumberOfMatches() {
+        return wins + draws + loses;
+    }
+
+    public List<Match> getHostMatches() {
+        return hostMatches;
+    }
+
+    public void setHostMatches(List<Match> hostMatches) {
+        this.hostMatches = hostMatches;
+    }
+
+    public List<Match> getGuestMatches() {
+        return guestMatches;
+    }
+
+    public void setGuestMatches(List<Match> guestMatches) {
+        this.guestMatches = guestMatches;
     }
 }

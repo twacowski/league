@@ -1,8 +1,6 @@
 package com.league.service.league;
 
 import com.league.model.*;
-
-import java.lang.reflect.Parameter;
 import java.util.List;
 
 public interface LeagueService {
@@ -10,8 +8,9 @@ public interface LeagueService {
     void deleteLeague(int leagueId);
     League findById(int id);
     List<League> getUserLeagues();
+    boolean isAbleToStart(int leagueId);
     void startLeague(League league);
-    List<Team> getStandings(League league);
+    List<Participation> getStandings(League league);
     void populateGameweeks(League league);
     void createGameweeks(League league);
     List<League> searchLeaguesByPhrase(String phrase);
@@ -25,5 +24,8 @@ public interface LeagueService {
     void cancelParticipation(League league);
     League acceptTeam(int participationId);
     League rejectTeam(int participationId);
+    void openRegistration(int leagueId);
+    void toArchieve(int leagueId);
+    Participation getParticipation(int leagueId, int teamId);
 
 }

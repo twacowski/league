@@ -45,7 +45,7 @@
                 <div class="mx-4" style="width: 300px;">
                     <select class="form-control font-weight-bold" th:field="*{host}">
                         <option th:value="0" text="">-----</option>
-                        <option th:each="team : ${match.league.teams}" th:value="${team.id}" th:text="${team.name}"></option>
+                        <option th:each="team : ${match.league.participationList}" th:value="${team.id}" th:text="${team.team.name}"></option>
                     </select>
                 </div>
 
@@ -62,7 +62,7 @@
                 <div class="mx-4" style="width: 300px;">
                     <select class="form-control font-weight-bold" th:field="*{guest}">
                         <option th:value="0" text="">-----</option>
-                        <option th:each="team : ${match.league.teams}" th:value="${team.id}" th:text="${team.name}"></option>
+                        <option th:each="team : ${match.league.participationList}" th:value="${team.id}" th:text="${team.team.name}"></option>
                     </select>
                 </div>
             </div>
@@ -96,17 +96,20 @@
                 </thead>
 
                 <tbody>
-                    <tr th:each="sheet, itemStat : *{hostScoreSheets}">
-                        <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].id}" >
-                        <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].user}" >
-                        <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].match}" >
-                        <input type="hidden" th:field="*{hostScoreSheets[__${itemStat.index}__].player}" >
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2"  type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].redCards}" ></td>
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].yellowCards}" placeholder="-"></td>
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].ownGoals}" placeholder="-"></td>
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{hostScoreSheets[__${itemStat.index}__].goals}" placeholder="-"></td>
+                    <tr th:each="sheet, itemStat : ${match.scoreSheets}">
+                        <span th:if="${sheet.host}">
+                        <input type="hidden" th:field="*{acoreSheets[__${itemStat.index}__].id}" >
+                        <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].user}" >
+                        <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].match}" >
+                        <input type="hidden" th:field="*{acoreSheets[__${itemStat.index}__].player}" >
+                            <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].host}" >
+                        <td class="px-1" style="width: 60px;"><input class="form-control px-2"  type="number" th:field="*{scoreSheets[__${itemStat.index}__].redCards}" ></td>
+                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{scoreSheets[__${itemStat.index}__].yellowCards}" placeholder="-"></td>
+                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{scoreSheets[__${itemStat.index}__].ownGoals}" placeholder="-"></td>
+                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{scoreSheets[__${itemStat.index}__].goals}" placeholder="-"></td>
                         <td class="align-middle" style="width: 265px;" align="right" th:text="${sheet.player.name}+' '+${sheet.player.surname}" />
                         <td class="align-middle pr-4" style="width: 50px;" align="center" th:text="${sheet.player.number}" />
+                        </span>
                     </tr>
 
                 </tbody>
@@ -126,17 +129,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="sheet, itemStat : *{guestScoreSheets}">
-                        <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].id}" >
-                        <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].user}" >
-                        <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].match}" >
-                        <input type="hidden" th:field="*{guestScoreSheets[__${itemStat.index}__].player}" >
-                        <td class="align-middle pl-4" style="width: 50px;" align="center" th:text="${sheet.player.number}" />
-                        <td class="align-middle" style="width: 265px;" align="left" th:text="${sheet.player.surname}+' '+${sheet.player.name}" />
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].goals}" ></td>
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].ownGoals}" ></td>
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].yellowCards}" ></td>
-                        <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{guestScoreSheets[__${itemStat.index}__].redCards}" ></td>
+                    <tr th:each="sheet, itemStat : ${match.scoreSheets}">
+                        <span th:if="${!sheet.host}">
+                            <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].id}" >
+                            <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].user}" >
+                            <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].match}" >
+                            <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].player}" >
+                            <input type="hidden" th:field="*{scoreSheets[__${itemStat.index}__].host}" >
+                            <td class="align-middle pl-4" style="width: 50px;" align="center" th:text="${sheet.player.number}" />
+                            <td class="align-middle" style="width: 265px;" align="left" th:text="${sheet.player.surname}+' '+${sheet.player.name}" />
+                            <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{scoreSheets[__${itemStat.index}__].goals}" ></td>
+                            <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{scoreSheets[__${itemStat.index}__].ownGoals}" ></td>
+                            <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{scoreSheets[__${itemStat.index}__].yellowCards}" ></td>
+                            <td class="px-1" style="width: 60px;"><input class="form-control px-2" type="number" th:field="*{scoreSheets[__${itemStat.index}__].redCards}" ></td>
+                        </span>
                     </tr>
                 </tbody>
             </table>
@@ -147,12 +153,6 @@
 
     </form>
 </div>
-
-<!--<div class="pd-1 bg-dark text-white navbar fixed-bottom" style="height: 40px;">
-    <div class="container d-flex justify-content-center" >
-        Create your own league!
-    </div>
-</div>-->
 
 </body>
 

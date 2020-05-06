@@ -88,8 +88,13 @@ public class LeagueController {
         if (league.getStatus() == Status.ARCHIVED || league.getStatus() == Status.ACTIVE) {
             return "redirect:/user/leagues/myLeagues";
         }
-
         leagueService.deleteLeague(leagueId);
+        return "redirect:/user/leagues/myLeagues";
+    }
+
+    @GetMapping("openRegistration")
+    public String openRegistration(@RequestParam("leagueId") int leagueId) {
+        leagueService.openRegistration(leagueId);
         return "redirect:/user/leagues/myLeagues";
     }
 
@@ -97,10 +102,8 @@ public class LeagueController {
     public String signUp(@RequestParam("leagueId") int leagueId, Model model) {
         Participation participation = new Participation(leagueService.findById(leagueId));
         List<Team> teams = teamService.getUserTeams();
-
         model.addAttribute("participation", participation);
         model.addAttribute("teams", teams);
-
         return "user/leagues/signUp";
     }
 
@@ -113,39 +116,34 @@ public class LeagueController {
     @GetMapping("cancelParticipation")
     public String cancelParticipation(@RequestParam("leagueId") int leagueId) {
         leagueService.cancelParticipation(leagueService.findById(leagueId));
-
         return "redirect:/user/leagues/myLeagues";
     }
 
     @GetMapping("acceptTeam")
     public String acceptTeam(@RequestParam("participationId") int participationId) {
         League league = leagueService.acceptTeam(participationId);
-
         return "redirect:/user/leagues/manageLeague?leagueId=" + league.getId();
     }
 
     @GetMapping("rejectTeam")
     public String rejectTeam(@RequestParam("participationId") int participationId) {
         League league = leagueService.rejectTeam(participationId);
-
         return "redirect:/user/leagues/manageLeague?leagueId=" + league.getId();
     }
 
     @GetMapping("startLeague")
     public String startLeague(@RequestParam("leagueId") int leagueId, Model model) {
-        League league = leagueService.findById(leagueId);
-        if (league.isStarted() || league.numberOfTeams() < 2) {
-            //TODO stworzyc endpoint dla tego erroru
-            return "redirect:/user/leagues/myLeagues";
+        if (leagueService.isAbleToStart(leagueId)) {
+            League league = leagueService.findById(leagueId);
+            model.addAttribute("league", league);
+            return "/user/leagues/startLeague";
         }
-        model.addAttribute("league", league);
-        return "/user/leagues/startLeague";
+        return "redirect:/user/leagues/myLeagues";
     }
 
     @PostMapping("startLeagueProceed")
     public String startLeagueProceed(@ModelAttribute("league") League league) {
         League theLeague = leagueService.findById(league.getId());
-        theLeague.setStarted(league.isStarted());
         theLeague.setRematch(league.isRematch());
         leagueService.startLeague(theLeague);
         return "redirect:/user/leagues/myLeagues";
@@ -195,4 +193,9 @@ public class LeagueController {
         return "/user/leagues/redCards";
     }
 
+    @GetMapping("toArchieve")
+    public String toArchieve(@RequestParam("leagueId") int leagueId) {
+        leagueService.toArchieve(leagueId);
+        return "redirect:/user/leagues/myLeagues";
+    }
 }
