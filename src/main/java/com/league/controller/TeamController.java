@@ -57,10 +57,9 @@ public class TeamController {
 
     @GetMapping("manageTeam")
     public String manageTeam(@RequestParam("teamId") int teamId, Model model) {
-        List<Player> players = playerService.getTeamPlayers(teamId);
-        model.addAttribute("players", players);
-        model.addAttribute("leagues", leagueService.getUserLeagues());
-        model.addAttribute("team", teamService.findById(teamId));
+        Team team = teamService.findById(teamId);
+        model.addAttribute("players", team.getPlayers());
+        model.addAttribute("team", team);
         return "user/teams/manageTeam";
     }
 

@@ -121,7 +121,7 @@
             <td class="pl-4 align-middle font-italic">County</td>
             <td class="pl-4 align-middle font-italic">Teams</td>
             <td class="pl-4 align-middle font-italic">User</td>
-            <td class="align-middle font-italic" align="center">Action</td>
+            <td class="align-middle font-italic">Action</td>
         </tr>
         <tr th:each="league: ${leagues}">
             <td class="pl-4 align-middle font-weight-bold" th:text="${leagues.indexOf(league)+1}+'.'"/>
@@ -142,7 +142,7 @@
                 <span th:unless="${league.county}==null" th:text="${league.county.name}"></span>
             </td>
             <td class="align-middle font-weight-bold" align="center"
-                th:text="${league.teams.size()}+' / '+${league.number}"/>
+                th:text="${league.acceptedParticipations()}+' / '+${league.number}"/>
             <td class="pl-4 align-middle font-weight-bold" th:text="${league.user.userName}"/>
             <td>
                 <a class="btn btn-sm btn-primary" th:href="@{/view/league(leagueId=${league.id})}">Details</a>

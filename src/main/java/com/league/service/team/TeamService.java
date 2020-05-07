@@ -12,7 +12,6 @@ public interface TeamService {
     void deleteTeam(int teamId);
     Team findById(int id);
     List<Team> getUserTeams();
-    List<Team> getLeagueTeams(int leagueId);
     List<Team> searchTeamsByPhrase(String phrase);
 
 }

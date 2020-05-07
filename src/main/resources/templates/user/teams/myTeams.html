@@ -33,16 +33,14 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
-                <th class="pl-4">Name</th>
-                <th>League</th>
+                <th class="pl-5 w-50">Name</th>
                 <th class="text-center">Actions</th>
             </tr>
         </thead>
 
         <tbody>
             <tr th:each="team: ${teams}">
-                <td class="pl-4 align-middle font-weight-bold" th:text="${team.name}" />
-                <td class="align-middle" style="width: 350px" th:text="${team.league}" />
+                <td class="pl-5 align-middle font-weight-bold w-50" th:text="${team.name}" />
                 <td class="align-middle" align="center" style="width: 300px">
                     <a class="btn btn-info mx-1" th:href="@{/user/teams/manageTeam(teamId=${team.id})}">Manage Team</a>
                     <a class="btn btn-danger" th:href="@{/user/teams/deleteTeam(teamId=${team.id})}"

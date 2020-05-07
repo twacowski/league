@@ -41,16 +41,6 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Team</label>
-                <div class="col-sm-9">
-                    <select class="form-control px-2" th:field="*{league}">
-                        <option th:value="0" text="">-----</option>
-                        <option th:each="league : ${leagues}" th:value="${league.id}" th:text="${league.name}"></option>
-                    </select>
-                </div>
-            </div>
-
             <div class="d-flex">
                 <a  class="btn btn-secondary my-1" th:href="@{/user/teams/myTeams}">back to My Teams</a>
                 <button type="submit" class="btn btn-success btn-lg ml-auto">Edit Team</button>
@@ -64,7 +54,71 @@
 
     <div>
         <br><br>
-        <h1>Team Details</h1>
+        <div class="pl-4">
+            <h2>Team's Competitions</h2>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th class="pl-3">League Name</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Matches</th>
+                <th class="text-center">Wins</th>
+                <th class="text-center">Draws</th>
+                <th class="text-center">Lost</th>
+                <th class="text-center">Scored</th>
+                <th class="text-center">Conceded</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="participation: ${team.getParticipationList()}">
+                    <td class="align-middle font-weight-bold pl-3" th:text="${participation.league.name}" />
+                    <td class="align-middle" align="center" th:switch="${participation.league.status}">
+                        <span class="badge badge-danger" th:case="${T(com.league.model.enums.Status).INACTIVE}">Inactive</span>
+                        <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Open to register</span>
+                        <span class="badge badge-success" th:case="${T(com.league.model.enums.Status).ACTIVE}">Active</span>
+                        <span class="badge badge-secondary" th:case="${T(com.league.model.enums.Status).ARCHIVED}">Archived</span>
+                    </td>
+                    <td class="align-middle" align="center" th:text="${participation.wins + participation.draws + participation.loses}" />
+                    <td class="align-middle text-success" align="center" th:text="${participation.wins}" />
+                    <td class="align-middle text-warning" align="center" th:text="${participation.draws}" />
+                    <td class="align-middle text-danger" align="center" th:text="${participation.loses}" />
+                    <td class="align-middle" align="center" th:text="${participation.scoredGoals}" />
+                    <td class="align-middle" align="center" th:text="${participation.concededGoals}" />
+                    <td class="align-middle" align="center">
+                        <a class="btn btn-info mx-1" th:href="@{/view/league(leagueId=${participation.league.id})}">Details</a>
+                    </td>
+                </tr>
+                <tr class="table-info">
+                    <td class="align-middle font-weight-bold pl-3" colspan="2">Overall</td>
+                    <td class="align-middle" align="center" th:text="${team.wins + team.draws + team.loses}" />
+                    <td class="align-middle text-success" align="center" th:text="${team.wins}" />
+                    <td class="align-middle text-warning" align="center" th:text="${team.draws}" />
+                    <td class="align-middle text-danger" align="center" th:text="${team.loses}" />
+                    <td class="align-middle" align="center" th:text="${team.scoredGoals}" />
+                    <td class="align-middle" align="center" th:text="${team.concededGoals}" />
+                    <td/>
+                </tr>
+                <span th:if="${team.getParticipationList().isEmpty()}">
+                    <tr>
+                        <td align="center" colspan="9">No Competitions. Find some for your team!</td>
+                    </tr>
+                </span>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+
+    <div>
+        <br><br>
+        <div class="pl-4">
+            <h2>Team's Players</h2>
+        </div>
 
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -97,7 +151,6 @@
         </table>
     </div>
 </div>
-
 
 </body>
 </html>

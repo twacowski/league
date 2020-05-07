@@ -68,7 +68,6 @@ public class LeagueController {
             return "redirect:/user/leagues/manageActiveLeague?leagueId=" + leagueId;
         }
 
-        model.addAttribute("teams", teamService.getLeagueTeams(leagueId));
         model.addAttribute("league", league);
         model.addAttribute("voivodeships", locationService.getListOfVoivodeships());
         model.addAttribute("counties", locationService.getListOfCountiesFromVoivodeship(league.getVoivodeship()));

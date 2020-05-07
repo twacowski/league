@@ -12,7 +12,6 @@ import java.util.List;
 public interface TeamRepository extends PagingAndSortingRepository<Team, Integer> {
     Page<Team> findAllByUserName(Pageable pageable, String username);
     List<Team> getTeamsByUserName(String username);
-    List<Team> getTeamsByLeagueId(int id);
 
     @Query("SELECT t FROM Team t WHERE t.name LIKE %:phrase%")
     List<Team> findTeamsByPhrase(@Param("phrase") String phrase);

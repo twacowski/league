@@ -1,9 +1,6 @@
 package com.league.controller;
 
-import com.league.model.League;
-import com.league.model.Match;
-import com.league.model.Participation;
-import com.league.model.Team;
+import com.league.model.*;
 import com.league.model.enums.Status;
 import com.league.service.league.LeagueService;
 import com.league.service.match.MatchService;
@@ -27,33 +24,50 @@ public class ViewController {
     MatchService matchService;
 
     @Autowired
-    private PlayerService playerService;
+    PlayerService playerService;
+
+    @Autowired
+    TeamService teamService;
 
     @GetMapping("matchDetails")
     public String matchDetails(@RequestParam("matchId") int matchId, Model model) {
         Match match = matchService.findById(matchId);
         matchService.createSheets(match);
         model.addAttribute("match", match);
-        return "/view/matchDetails";
+        return "view/matchDetails";
     }
 
     @GetMapping("league")
     public String league(@RequestParam("leagueId") int leagueId, Model model) {
         League league = leagueService.findById(leagueId);
-        List<Team> teams = league.getTeams();
-        List<Participation> participations = league.getParticipationList();
+        List<Participation> participations = league.getAcceptedParticipationList();
         Team team = leagueService.participatingTeam(participations);
 
         model.addAttribute("team", team);
         model.addAttribute("league", league);
-        model.addAttribute("teams", teams);
+        model.addAttribute("participations", participations);
 
         if(league.getStatus() == Status.TOREGISTER) {
             return "view/leagueInfo";
         }
 
         model.addAttribute("standings", leagueService.getStandings(league));
-        return "/view/league";
+        return "view/league";
+    }
+
+    @GetMapping("team")
+    public String team(@RequestParam("teamId") int teamId, Model model) {
+        Team team = teamService.findById(teamId);
+        model.addAttribute("players", team.getPlayers());
+        model.addAttribute("team", team);
+        return "view/team";
+    }
+
+    @GetMapping("player")
+    public String player(@RequestParam("playerId") int playerId, Model model) {
+        Player player = playerService.findById(playerId);
+        model.addAttribute("player", player);
+        return "view/player";
     }
 
     @GetMapping("topScorers")
@@ -61,7 +75,7 @@ public class ViewController {
         League league = leagueService.findById(leagueId);
         model.addAttribute("league", league);
         model.addAttribute("topScorers", playerService.getTopScorers(league));
-        return "/view/topScorers";
+        return "view/topScorers";
     }
 
     @GetMapping("ownGoals")
@@ -70,7 +84,7 @@ public class ViewController {
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
         model.addAttribute("ownGoals", playerService.getMostOwnGoals(league));
-        return "/view/ownGoals";
+        return "view/ownGoals";
     }
 
     @GetMapping("yellowCards")
@@ -79,7 +93,7 @@ public class ViewController {
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
         model.addAttribute("yellowCards", playerService.getMostYellowCards(league));
-        return "/view/yellowCards";
+        return "view/yellowCards";
     }
 
     @GetMapping("redCards")
@@ -88,7 +102,7 @@ public class ViewController {
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
         model.addAttribute("redCards", playerService.getMostRedCards(league));
-        return "/view/redCards";
+        return "view/redCards";
     }
 
 }

@@ -6,70 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Match details page</title>
 </head>
 <body>
 <div class="p-3 mb-2 bg-dark text-white" style="height: 70px;">
     <div class="container d-flex" align="center">
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/index}">Home</a>
+        <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
         <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Competitions Base</a>
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
-        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
-        <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+        <a sec:authorize="isAuthenticated()">
+            <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">My Leagues</a>
+            <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">My Teams</a>
+            <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">My Players</a>
+        </a>
+        <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin
+            Panel</a>
         <form class="ml-auto form-inline my-2 my-lg-0" action="#" th:action="@{/search}" method="GET">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-        <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+        <a sec:authorize="isAuthenticated()">
+            <a class="ml-auto btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+        </a>
+        <a sec:authorize="!isAuthenticated()">
+            <a class="btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
+            <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+        </a>
     </div>
 </div>
 
-<div class="container d-flex justify-content-center">
-    <div style="width: 750px">
-        <h1>Edit player</h1>
-        <br>
-        <form action="#" th:action="@{/user/players/editPlayerProceed}"
-              th:object="${player}" method="POST">
-            <input type="hidden" th:field="*{id}" />
+<div class="container" align="center">
+    <div style="width: 600px">
+        <div align="center">
+            <br>
+            <h1><a th:text="${player.name + ' ' + player.surname}"/></h1>
+            <br>
+        </div>
+        <table class="table table-borderless">
+            <tbody>
+            <tr>
+                <td class="lead align-middle font-weight-bold" align="right">Number:</td>
+                <td class="lead align-middle font-weight-bold" th:text="${player.number}"/>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold" align="right">Team:</td>
+                <span th:if="${player.team == null}">
+                    -
+                </span>
+                <span th:unless="${player.team == null}">
+                    <td class="lead align-middle font-weight-bold" th:text="${player.team.name}"/>
+                </span>
 
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Number</label>
-                <div class="col-sm-9">
-                    <input class="form-control px-2" type="number" th:field="*{number}" placeholder="-">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Player Name</label>
-                <div class="col-sm-9">
-                    <input class="form-control px-2" type="text" th:field="*{name}" placeholder="Player name">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Player Surname</label>
-                <div class="col-sm-9">
-                    <input class="form-control px-2" type="text" th:field="*{surname}" placeholder="Player surname">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Team</label>
-                <div class="col-sm-9">
-                    <select class="form-control px-2" th:field="*{team}">
-                        <option th:value="0" text="">-----</option>
-                        <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="d-flex">
-                <a  class="btn btn-secondary my-1" th:href="@{/user/players/myPlayers}">back to My Players</a>
-                <button type="submit" class="btn btn-success btn-lg ml-auto">Edit Player</button>
-            </div>
-
-        </form>
+            </tr>
+            <tr>
+                <td class="lead align-middle font-weight-bold" align="right">Owner:</td>
+                <td class="lead align-middle font-weight-bold" th:text="${player.user.userName}"/>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -123,6 +118,5 @@
         </table>
     </div>
 </div>
-
 </body>
 </html>

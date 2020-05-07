@@ -40,16 +40,6 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">League</label>
-                <div class="col-sm-9">
-                    <select class="form-control px-2" th:field="*{league}">
-                        <option th:value="0" text="">-----</option>
-                        <option th:each="league : ${leagues}" th:value="${league.id}" th:text="${league.name}"></option>
-                    </select>
-                </div>
-            </div>
-
             <div class="d-flex">
                 <a  class="btn btn-secondary my-1" th:href="@{/user/teams/myTeams}">back to My Teams</a>
                 <button type="submit" class="btn btn-success btn-lg ml-auto">Add Team</button>

@@ -27,9 +27,9 @@
 </div>
 
 <div class="container d-flex justify-content-center">
-    <div style="width: 750px">
+    <div style="width: 750px" class="text-center">
 
-        <h1>You're trying to sign up to <a th:text="${participation.league.name}"/></h1>
+        <h2>You're trying to sign up to <a th:text="${participation.league.name}"/></h2>
 
         <br>
         <form action="#" th:action="@{/user/leagues/signUpProceed}"
@@ -44,17 +44,19 @@
                                 th:value="${team.id}" th:text="${team.name}"></option>
                     </select>
                 </div>
-                <span th:if="${teams.isEmpty()}">
-                    <div class="align-content-center alert alert-danger" role="alert">
-                        You don't have any team! Go to <a href="/user/teams/myTeams" class="alert-link">My Teams</a>, create some and come back!
-                    </div>
-                </span>
             </div>
+            <span th:if="${teams.isEmpty()}">
+                <div class="alert alert-danger" role="alert">
+                    You don't have any team! Go to <a href="/user/teams/myTeams" class="alert-link">My Teams</a>, create some and come back!
+                </div>
+            </span>
             <div class="d-flex">
                 <a  class="btn btn-secondary my-1" th:href="@{/view/league(leagueId=${participation.league.id})}">back to League Details</a>
+                <div class="ml-auto">
                 <span th:if="${!teams.isEmpty()}">
-                    <button type="submit" class="btn btn-success btn-lg ml-auto">Sign Up My Team</button>
+                    <button type="submit" class="btn btn-success btn-lg">Sign Up My Team</button>
                 </span>
+                </div>
             </div>
 
         </form>

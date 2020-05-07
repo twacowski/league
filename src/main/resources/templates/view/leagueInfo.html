@@ -37,10 +37,8 @@
 </div>
 
 <div class="container" align="center">
-    <br>
     <div style="width: 600px">
         <div align="center">
-            <br>
             <h1><a th:text="${league.name}"/></h1>
         </div>
         <table class="table table-borderless">
@@ -131,16 +129,16 @@
             <thead class="thead-dark">
             <tr>
                 <th class="pl-3">#</th>
-                <th>List of Teams</th>
+                <th>List of Accepted Teams</th>
                 <th>User</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="team: ${teams}">
-                <td class="pl-3 align-middle font-weight-bold" th:text="${teams.indexOf(team)+1}+'.'"/>
-                <td class="align-middle" th:text="${team.name}"/>
-                <td class="align-middle" th:text="${team.user.userName}"/>
+            <tr th:each="participation: ${participations}">
+                <td class="pl-3 align-middle font-weight-bold" th:text="${participations.indexOf(participation)+1}+'.'"/>
+                <td class="align-middle" th:text="${participation.team.name}"/>
+                <td class="align-middle" th:text="${participation.team.user.userName}"/>
             </tr>
             </tbody>
         </table>

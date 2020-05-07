@@ -141,6 +141,32 @@ public class MatchServiceImpl implements MatchService {
         participation.setBalance(balance);
         participation.setPoints(points);
 
+        wins = 0;
+        draws = 0;
+        loses = 0;
+        scoredGoals = 0;
+        concededGoals = 0;
+        points = 0;
+        balance = 0;
+        Team team = participation.getTeam();
+        List<Participation> participations = team.getParticipationList();
+        for(Participation leagueParticipation : participations) {
+            wins += leagueParticipation.getWins();
+            draws += leagueParticipation.getDraws();
+            loses += leagueParticipation.getLoses();
+            scoredGoals += leagueParticipation.getScoredGoals();
+            concededGoals += leagueParticipation.getConcededGoals();
+            points += leagueParticipation.getPoints();
+            balance += leagueParticipation.getBalance();
+        }
+        team.setWins(wins);
+        team.setDraws(draws);
+        team.setLoses(loses);
+        team.setScoredGoals(scoredGoals);
+        team.setConcededGoals(concededGoals);
+        team.setPoints(points);
+        team.setBalance(balance);
+
         return participation;
     }
 
@@ -181,5 +207,19 @@ public class MatchServiceImpl implements MatchService {
         stats.setRedCards(redCards);
         statsList.add(stats);
         player.setStats(statsList);
+        goals = 0;
+        ownGoals = 0;
+        yellowCards = 0;
+        redCards = 0;
+        for(Stat leagueStats : statsList) {
+            goals+=leagueStats.getGoals();
+            ownGoals+=leagueStats.getOwnGoals();
+            yellowCards+=leagueStats.getYellowCards();
+            redCards+=leagueStats.getRedCards();
+        }
+        player.setGoals(goals);
+        player.setOwnGoals(ownGoals);
+        player.setYellowCards(yellowCards);
+        player.setRedCards(redCards);
     }
 }

@@ -4,6 +4,7 @@ import com.league.model.enums.CompetitionType;
 import com.league.model.enums.Status;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,10 +43,6 @@ public class League {
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="county_id")
     private County county;
-
-    @OneToMany(mappedBy="league", cascade={CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Team> teams;
 
     @OneToMany(mappedBy="league", cascade={CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -119,21 +116,9 @@ public class League {
         this.matches = matches;
     }
 
-    public List<Team> getTeams() {
-        return teams;
-    }
-
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
-
     @Override
     public String toString() {
         return name;
-    }
-
-    public int numberOfTeams() {
-        return teams.size();
     }
 
     public Status getStatus() {
@@ -230,5 +215,25 @@ public class League {
 
     public void cancelParticipation(Participation participation) {
         this.participationList.remove(participation);
+    }
+
+    public int acceptedParticipations() {
+        int count = 0;
+        for(Participation participation : this.participationList) {
+            if(participation.isAccepted()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public List<Participation> getAcceptedParticipationList() {
+        List<Participation> accepted = new ArrayList<>();
+        for(Participation participation : getParticipationList()) {
+            if(participation.isAccepted()) {
+                accepted.add(participation);
+            }
+        }
+        return accepted;
     }
 }

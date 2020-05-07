@@ -12,12 +12,15 @@ public interface LeagueRepository extends JpaRepository<League, Integer> {
     List<League> findTop10ByOrderByIdDesc();
     List<League> findTop10ByOrderByNumberDesc();
 
-    @Query("SELECT l FROM League l WHERE l.name LIKE %:phrase%")
+    @Query("SELECT l FROM League l WHERE l.name LIKE %:phrase% AND l.status <> 'INACTIVE' ORDER BY l.id DESC")
     List<League> findLeaguesByPhrase(@Param("phrase") String phrase);
 
-    @Query("SELECT l FROM League l WHERE l.voivodeship.id=:voivodeship AND l.county.id=:county")
+    @Query("SELECT l FROM League l WHERE l.status <> 'INACTIVE' ORDER BY l.id DESC")
+    List<League> getAllLeaguesToView();
+
+    @Query("SELECT l FROM League l WHERE l.voivodeship.id=:voivodeship AND l.county.id=:county ORDER BY l.id DESC")
     List<League> findLeaguesByLocation(@Param("voivodeship") int voivodeship, @Param("county") int county);
 
-    @Query("SELECT l FROM League l WHERE l.voivodeship.id=:voivodeship")
+    @Query("SELECT l FROM League l WHERE l.voivodeship.id=:voivodeship ORDER BY l.id DESC")
     List<League> findLeaguesByVoivodeship(@Param("voivodeship") int voivodeship);
 }

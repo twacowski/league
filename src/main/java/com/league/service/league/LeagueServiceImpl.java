@@ -221,8 +221,8 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public List<League> getAllLeagues() {
-        return leagueRepository.findAll();
+    public List<League> getAllLeaguesToView() {
+        return leagueRepository.getAllLeaguesToView();
     }
 
     @Override
@@ -238,6 +238,11 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public void saveParticipation(Participation participation) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        if(user.getId() == participation.getTeam().getUser().getId()) {
+            participation.setAccepted(true);
+        }
         participationRepository.save(participation);
     }
 
@@ -248,7 +253,9 @@ public class LeagueServiceImpl implements LeagueService {
         List<Participation> participations = new ArrayList<>();
         for(Team team : teams) {
             for(Participation participation : team.getParticipationList()) {
-                participations.add(participation);
+                if(!participation.getLeague().getUser().getUserName().equals(auth.getName())) {
+                    participations.add(participation);
+                }
             }
         }
         Collections.sort(participations, Comparator.comparingInt(Participation::getId));

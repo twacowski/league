@@ -89,7 +89,7 @@ public class IndexController {
         model.addAttribute("county", new County());
         model.addAttribute("voivodeships", locationService.getListOfVoivodeships());
         model.addAttribute("counties", locationService.getListOfCounties());
-        model.addAttribute("leagues", leagueService.getAllLeagues());
+        model.addAttribute("leagues", leagueService.getAllLeaguesToView());
 
         return "competitionsBase";
     }

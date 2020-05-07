@@ -45,7 +45,7 @@
         <tbody>
             <tr th:each="league: ${leagues}">
                 <td class="pl-4 align-middle font-weight-bold" th:text="${league.name}" />
-                <td class="align-middle" align="center" th:text="${league.numberOfTeams()}" />
+                <td class="align-middle" align="center" th:text="${league.acceptedParticipations()}" />
                 <td class="align-middle" align="center" th:switch="${league.status}">
                     <span class="badge badge-danger" th:case="${T(com.league.model.enums.Status).INACTIVE}">Inactive</span>
                     <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Open to register</span>

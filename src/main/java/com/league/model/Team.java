@@ -25,11 +25,6 @@ public class Team {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "league_id")
-    private League league;
-
     @OneToMany(mappedBy = "team",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -39,14 +34,6 @@ public class Team {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     private List<Participation> participationList;
-
-    public League getLeague() {
-        return league;
-    }
-
-    public void setLeague(League league) {
-        this.league = league;
-    }
 
     public List<Player> getPlayers() {
         return players;

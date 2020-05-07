@@ -16,7 +16,7 @@ public interface LeagueService {
     List<League> searchLeaguesByPhrase(String phrase);
     List<League> getPopularLeagues();
     List<League> getLatestLeagues();
-    List<League> getAllLeagues();
+    List<League> getAllLeaguesToView();
     List<League> getLeaguesByLocation(Voivodeship voivodeship, County county);
     void saveParticipation(Participation participation);
     List<Participation> getAllUserParticipations();
