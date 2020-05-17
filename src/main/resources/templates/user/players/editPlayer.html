@@ -24,18 +24,18 @@
             <div class="navbar-collapse collapse" id="navbarToggleExternalContent">
                 <ul class="navbar-nav mr-auto">
                     <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Leagues Base</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Leagues</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">Teams</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">Players</a>
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/competitionsBase}">Leagues Base</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/leagues/myLeagues}">Leagues</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/teams/myTeams}">Teams</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/players/myPlayers}">Players</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold ml-1" th:href="@{/admin/index}">Admin</a>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <form class="form-inline my-2 my-lg-0 mx-auto" action="#" th:action="@{/search}" method="GET">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
                         <button class="btn btn-success my-2 my-sm-0 mx-auto" type="submit">Search</button>
                     </form>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/logout}">Log Out</a>
                 </ul>
             </div>
         </div>
@@ -44,34 +44,35 @@
 
 <div class="container d-flex justify-content-center">
     <div style="width: 750px">
-        <h1>Edit player</h1>
+        <br>
+        <h3 class="text-center">Edit player</h3>
         <br>
         <form action="#" th:action="@{/user/players/editPlayerProceed}"
               th:object="${player}" method="POST">
             <input type="hidden" th:field="*{id}" />
 
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Number</label>
+                <label class="col-sm-3 col-form-label">Number:</label>
                 <div class="col-sm-9">
                     <input class="form-control px-2" type="number" th:field="*{number}" placeholder="-">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Player Name</label>
+                <label class="col-sm-3 col-form-label">Player Name:</label>
                 <div class="col-sm-9">
                     <input class="form-control px-2" type="text" th:field="*{name}" placeholder="Player name">
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Player Surname</label>
+                <label class="col-sm-3 col-form-label">Player Surname:</label>
                 <div class="col-sm-9">
                     <input class="form-control px-2" type="text" th:field="*{surname}" placeholder="Player surname">
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Team</label>
+                <label class="col-sm-3 col-form-label">Team:</label>
                 <div class="col-sm-9">
                     <select class="form-control px-2" th:field="*{team}">
                         <option th:value="0" text="">-----</option>
@@ -91,46 +92,46 @@
 
 <div class="container">
 
-    <div>
-        <br><br>
-        <div class="pl-4">
-            <h2>Player's statistics</h2>
-        </div>
 
+    <br>
+    <div class="pl-4">
+        <h3>Player's statistics</h3>
+    </div>
+    <div class="table-responsive">
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th class="align-middle pl-5">League</th>
+                <th class="align-middle pl-md-4">League</th>
                 <th class="align-middle text-center">Status</th>
-                <th style="width: 60px;"><img width="35" height="35" th:src="@{/images/goal.png}"/></th>
-                <th style="width: 60px;"><img width="35" height="35" th:src="@{/images/owngoal.png}"/></th>
-                <th style="width: 60px;"><img width="35" height="35" th:src="@{/images/yellow-card.png}"/></th>
-                <th style="width: 60px;"><img width="35" height="35" th:src="@{/images/red-card.png}"/></th>
+                <th style="max-width: 60px;"><img width="30" height="30" th:src="@{/images/goal.png}"/></th>
+                <th class="d-none d-md-table-cell" style="max-width: 60px;"><img width="30" height="30" th:src="@{/images/owngoal.png}"/></th>
+                <th style="max-width: 60px;"><img width="30" height="30" th:src="@{/images/yellow-card.png}"/></th>
+                <th style="max-width: 60px;"><img width="30" height="30" th:src="@{/images/red-card.png}"/></th>
                 <th class="align-middle text-center">Actions</th>
             </tr>
             </thead>
 
             <tbody>
             <tr th:each="leagueStat: ${player.stats}">
-                <td class="align-middle pl-5 font-weight-bold" th:text="${leagueStat.league.name}" />
+                <td class="align-middle pl-md-4 font-weight-bold" th:text="${leagueStat.league.name}" />
                 <td class="align-middle" align="center" th:switch="${leagueStat.league.status}">
                     <span class="badge badge-danger" th:case="${T(com.league.model.enums.Status).INACTIVE}">Inactive</span>
-                    <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Open to register</span>
+                    <span class="badge badge-primary" th:case="${T(com.league.model.enums.Status).TOREGISTER}">Register</span>
                     <span class="badge badge-success" th:case="${T(com.league.model.enums.Status).ACTIVE}">Active</span>
                     <span class="badge badge-secondary" th:case="${T(com.league.model.enums.Status).ARCHIVED}">Archived</span>
                 </td>
                 <td class="align-middle" align="center" th:text="${player.goals}" />
-                <td class="align-middle" align="center" th:text="${player.ownGoals}" />
+                <td class="align-middle d-none d-md-table-cell" align="center" th:text="${player.ownGoals}" />
                 <td class="align-middle" align="center" th:text="${player.yellowCards}" />
                 <td class="align-middle" align="center" th:text="${player.redCards}" />
-                <td class="align-middle" align="center" style="width: 300px">
-                    <a class="btn btn-info mx-1" th:href="@{/view/league(leagueId=${leagueStat.league.id})}">Show Competition</a>
+                <td class="align-middle" align="center" style="max-width: 300px">
+                    <a class="btn btn-info mx-1" th:href="@{/view/league(leagueId=${leagueStat.league.id})}">Details</a>
                 </td>
             </tr>
             <tr class="table-info">
-                <td class="align-middle font-weight-bold pl-5" colspan="2">Overall</td>
+                <td class="align-middle font-weight-bold pl-md-4" colspan="2">Overall</td>
                 <td class="align-middle" align="center" th:text="${player.goals}" />
-                <td class="align-middle" align="center" th:text="${player.ownGoals}" />
+                <td class="align-middle d-none d-md-table-cell" align="center" th:text="${player.ownGoals}" />
                 <td class="align-middle" align="center" th:text="${player.yellowCards}" />
                 <td class="align-middle" align="center" th:text="${player.RedCards}" />
                 <td/>

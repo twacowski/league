@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface LeagueRepository extends JpaRepository<League, Integer> {
     List<League> getLeaguesByUserNameOrderByIdDesc(String username);
-    List<League> findTop10ByOrderByIdDesc();
-    List<League> findTop10ByOrderByNumberDesc();
+    List<League> findTop5ByOrderByIdDesc();
+    List<League> findTop5ByOrderByNumberDesc();
 
     @Query("SELECT l FROM League l WHERE l.name LIKE %:phrase% AND l.status <> 'INACTIVE' ORDER BY l.id DESC")
     List<League> findLeaguesByPhrase(@Param("phrase") String phrase);

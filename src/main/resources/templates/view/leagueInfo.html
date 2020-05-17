@@ -24,13 +24,13 @@
             <div class="navbar-collapse collapse" id="navbarToggleExternalContent">
                 <ul class="navbar-nav mr-auto">
                     <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Leagues Base</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/competitionsBase}">Leagues Base</a>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Leagues</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">Teams</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">Players</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/leagues/myLeagues}">Leagues</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/teams/myTeams}">Teams</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/players/myPlayers}">Players</a>
                     </a>
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold ml-1" th:href="@{/admin/index}">Admin</a>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <form class="form-inline my-2 my-lg-0 mx-auto" action="#" th:action="@{/search}" method="GET">
@@ -38,11 +38,11 @@
                         <button class="btn btn-success my-2 my-sm-0 mx-auto" type="submit">Search</button>
                     </form>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/logout}">Log Out</a>
                     </a>
                     <a sec:authorize="!isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/login}">Log In</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/registration}">Sign up</a>
                     </a>
                 </ul>
             </div>
@@ -51,72 +51,72 @@
 </header>
 
 <div class="container" align="center">
-    <div style="width: 600px">
+    <br>
         <div align="center">
-            <h1><a th:text="${league.name}"/></h1>
+            <h3><a th:text="${league.name}"/></h3>
         </div>
-        <table class="table table-borderless">
-            <tbody>
-            <tr>
-                <td class="lead align-middle font-weight-bold">Organizer:</td>
-                <td class="lead align-middle font-weight-bold" th:text="${league.user.userName}"/>
-            </tr>
-            <tr>
-                <td class="lead align-middle font-weight-bold">Type of competition:</td>
-                <td class="lead align-middle font-weight-bold" th:text="${league.type.getDisplayValue()}"/>
-            </tr>
-            <tr>
-                <td class="lead align-middle font-weight-bold">Season:</td>
-                <td class="lead align-middle font-weight-bold">
-                    <span th:if="${league.season}==0">-</span>
-                    <span th:unless="${league.season}==0" th:text="${league.season}"></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="lead align-middle font-weight-bold">Expected number of teams:</td>
-                <td class="lead align-middle font-weight-bold" th:text="${league.number}"/>
-            </tr>
-            <tr>
-                <td class="lead align-middle font-weight-bold">Voivodeship:</td>
-                <td class="lead align-middle font-weight-bold">
-                    <span th:if="${league.voivodeship}==null">-</span>
-                    <span th:unless="${league.voivodeship}==null" th:text="${league.voivodeship.name}"></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="lead align-middle font-weight-bold">County:</td>
-                <td class="lead align-middle font-weight-bold">
-                    <span th:if="${league.county}==null">-</span>
-                    <span th:unless="${league.county}==null" th:text="${league.county.name}"></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="lead align-middle font-weight-bold">City:</td>
-                <td class="lead align-middle font-weight-bold">
-                    <span th:if="${league.city}==null">-</span>
-                    <span th:unless="${league.city}==null" th:text="${league.city}"></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="lead align-middle font-weight-bold">Details:</td>
-                <td class="lead align-middle font-weight-bold">
-                    <span th:if="${league.details}==''">-</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="align-middle" colspan="2">
-                    <span th:unless="${league.details}==null" th:text="${league.details}"></span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-borderless">
+                <tbody>
+                <tr>
+                    <td class="align-middle font-weight-bold w-50 text-right">Organizer:</td>
+                    <td class="align-middle" th:text="${league.user.userName}"/>
+                </tr>
+                <tr>
+                    <td class="align-middle font-weight-bold text-right">Type of competition:</td>
+                    <td class="align-middle" th:text="${league.type.getDisplayValue()}"/>
+                </tr>
+                <tr>
+                    <td class="align-middle font-weight-bold text-right">Season:</td>
+                    <td class="align-middle">
+                        <span th:if="${league.season}==0">-</span>
+                        <span th:unless="${league.season}==0" th:text="${league.season}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle font-weight-bold text-right">Expected number of teams:</td>
+                    <td class="align-middle" th:text="${league.number}"/>
+                </tr>
+                <tr>
+                    <td class="align-middle font-weight-bold text-right">Voivodeship:</td>
+                    <td class="align-middle">
+                        <span th:if="${league.voivodeship}==null">-</span>
+                        <span th:unless="${league.voivodeship}==null" th:text="${league.voivodeship.name}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle font-weight-bold text-right">County:</td>
+                    <td class="align-middle">
+                        <span th:if="${league.county}==null">-</span>
+                        <span th:unless="${league.county}==null" th:text="${league.county.name}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle font-weight-bold text-right">City:</td>
+                    <td class="align-middle">
+                        <span th:if="${league.city}==null">-</span>
+                        <span th:unless="${league.city}==null" th:text="${league.city}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle font-weight-bold text-center" colspan="2">Details:</td>
+                </tr>
+                <tr>
+                    <td class="align-middle text-center" colspan="2">
+                        <span th:if="${league.details}==''">-</span>
+                        <span th:unless="${league.details}==null" th:text="${league.details}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
         <span th:if="${team} == null">
             <div class="w-50 p-3">
                 <a th:href="@{/user/leagues/signUp(leagueId=${league.id})}" class="btn btn-success btn-lg btn-block"
                    role="button" aria-pressed="true">Sign up my team</a>
             </div>
         </span>
-    </div>
 </div>
 
 <div class="container d-flex justify-content-center">

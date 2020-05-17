@@ -212,12 +212,12 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public List<League> getPopularLeagues() {
-        return leagueRepository.findTop10ByOrderByNumberDesc();
+        return leagueRepository.findTop5ByOrderByNumberDesc();
     }
 
     @Override
     public List<League> getLatestLeagues() {
-        return leagueRepository.findTop10ByOrderByIdDesc();
+        return leagueRepository.findTop5ByOrderByIdDesc();
     }
 
     @Override
@@ -240,7 +240,7 @@ public class LeagueServiceImpl implements LeagueService {
     public void saveParticipation(Participation participation) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(auth.getName());
-        if(user.getId() == participation.getTeam().getUser().getId()) {
+        if(user.getId() == participation.getLeague().getUser().getId()) {
             participation.setAccepted(true);
         }
         participationRepository.save(participation);
@@ -314,20 +314,17 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public void openRegistration(int leagueId) {
-        if(isOwner(leagueId)) {
-            League league = leagueRepository.findById(leagueId).get();
-            league.setStatus(Status.TOREGISTER);
-            leagueRepository.save(league);
-        }
+        League league = leagueRepository.findById(leagueId).get();
+        league.setStatus(Status.TOREGISTER);
+        leagueRepository.save(league);
     }
 
     @Override
     public void toArchieve(int leagueId) {
-        if(isOwner(leagueId)) {
-            League league = leagueRepository.findById(leagueId).get();
-            league.setStatus(Status.ARCHIVED);
-            leagueRepository.save(league);
-        }
+        League league = leagueRepository.findById(leagueId).get();
+        league.setStatus(Status.ARCHIVED);
+        leagueRepository.save(league);
+
     }
 
     @Override
@@ -335,6 +332,7 @@ public class LeagueServiceImpl implements LeagueService {
         return participationRepository.getParticipation(leagueId, teamId);
     }
 
+    @Override
     public boolean isOwner(int leagueId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(auth.getName());

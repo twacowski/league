@@ -201,6 +201,11 @@ public class MatchServiceImpl implements MatchService {
         }
         statsList.remove(tempStat);
         Stat stats = statRepository.getPlayerStat(match.getLeague().getId(), player.getId());
+        if(stats == null) {
+            stats = new Stat();
+            stats.setLeague(match.getLeague());
+            stats.setPlayer(player);
+        }
         stats.setGoals(goals);
         stats.setOwnGoals(ownGoals);
         stats.setYellowCards(yellowCards);

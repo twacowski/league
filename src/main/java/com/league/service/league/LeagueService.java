@@ -27,5 +27,6 @@ public interface LeagueService {
     void openRegistration(int leagueId);
     void toArchieve(int leagueId);
     Participation getParticipation(int leagueId, int teamId);
+    boolean isOwner(int leagueId);
 
 }

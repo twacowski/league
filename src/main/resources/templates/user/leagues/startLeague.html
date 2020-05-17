@@ -24,18 +24,18 @@
             <div class="navbar-collapse collapse" id="navbarToggleExternalContent">
                 <ul class="navbar-nav mr-auto">
                     <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Leagues Base</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Leagues</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">Teams</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">Players</a>
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/competitionsBase}">Leagues Base</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/leagues/myLeagues}">Leagues</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/teams/myTeams}">Teams</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/players/myPlayers}">Players</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold ml-1" th:href="@{/admin/index}">Admin</a>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <form class="form-inline my-2 my-lg-0 mx-auto" action="#" th:action="@{/search}" method="GET">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
                         <button class="btn btn-success my-2 my-sm-0 mx-auto" type="submit">Search</button>
                     </form>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/logout}">Log Out</a>
                 </ul>
             </div>
         </div>
@@ -49,7 +49,6 @@
         <form action="#" th:action="@{/user/leagues/startLeagueProceed}"
               th:object="${league}" method="POST">
             <input type="hidden" th:field="*{id}">
-            <input type="hidden" th:field="*{teams}">
 
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">League Name</label>

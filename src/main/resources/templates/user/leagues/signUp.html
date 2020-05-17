@@ -45,8 +45,8 @@
 
 <div class="container d-flex justify-content-center">
     <div style="width: 750px" class="text-center">
-
-        <h2>You're trying to sign up to <a th:text="${participation.league.name}"/></h2>
+        <br>
+        <h4>You're trying to sign up to <a th:text="${participation.league.name}"/></h4>
 
         <br>
         <form action="#" th:action="@{/user/leagues/signUpProceed}"
@@ -54,7 +54,7 @@
 
             <div class="form-group row">
                 <input type="hidden" th:field="*{league}">
-                <label class="col-sm-3 col-form-label">Choose team you want to sign up:</label>
+                <label class="col-sm-3 ">Choose team you want to sign up:</label>
                 <div class="col-sm-9">
                     <select class="form-control px-2" th:field="*{team}">
                         <option th:each="team : ${teams}"

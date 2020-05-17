@@ -24,13 +24,13 @@
             <div class="navbar-collapse collapse" id="navbarToggleExternalContent">
                 <ul class="navbar-nav mr-auto">
                     <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Leagues Base</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/competitionsBase}">Leagues Base</a>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Leagues</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">Teams</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">Players</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/leagues/myLeagues}">Leagues</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/teams/myTeams}">Teams</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/players/myPlayers}">Players</a>
                     </a>
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold ml-1" th:href="@{/admin/index}">Admin</a>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <form class="form-inline my-2 my-lg-0 mx-auto" action="#" th:action="@{/search}" method="GET">
@@ -38,11 +38,11 @@
                         <button class="btn btn-success my-2 my-sm-0 mx-auto" type="submit">Search</button>
                     </form>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/logout}">Log Out</a>
                     </a>
                     <a sec:authorize="!isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/login}">Log In</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/registration}">Sign up</a>
                     </a>
                 </ul>
             </div>
@@ -53,26 +53,21 @@
 <div class="container" align="center">
 
         <div class="border border-light rounded p-2 mx-9 my-4 bg-light text-dark">
+            <h3>Match Details</h3>
             <br>
-            <h1>Match Details</h1>
-            <br>
-            <div class="mb-3 row d-flex justify-content-center">
-                <div class="mx-4" style="width: 300px;">
-                    <h3 class="font-weight-bold" th:text="${match.host.team.name}"></h3>
-                </div>
+            <div class="container mb-3">
+                <div class="row">
+                    <div class="mx-lg-4 col-md text-center" align="center" >
+                        <h4 class="font-weight-bold" th:text="${match.host.team.name}"></h4>
+                    </div>
 
-                <div class="mx-2 px-1" align="center" style="width: 60px;">
-                    <h3 class="pl-2" th:text="${match.hostScore}"/>
-                </div>
+                    <div class="mx-auto px-1 col-md text-center" style="max-width: 100px">
+                        <h4 th:text="${match.hostScore} + ' : ' + ${match.guestScore}"/>
+                    </div>
 
-                <div class=" align-middle"><h3> : </h3></div>
-
-                <div class="mx-2 px-1" align="center" style="width: 60px;">
-                    <h3 class="px-2" th:text="${match.guestScore}"/>
-                </div>
-
-                <div class="mx-4" style="width: 300px;">
-                    <h3 class="font-weight-bold" th:text="${match.guest.team.name}"></h3>
+                    <div class="mx-lg-4 col-md text-center" align="center" >
+                        <h4 class="font-weight-bold" th:text="${match.guest.team.name}"></h4>
+                    </div>
                 </div>
             </div>
             <!--<input type="date" th:field="*{date}" >
@@ -87,10 +82,10 @@
         </div>
 
         <br>
-        <h2>Teams:</h2>
+        <h3>Players:</h3>
 
-        <div class="row d-flex justify-content-center">
-            <div>
+        <div class="row">
+            <div class="col-lg-6">
             <table class="table table-striped">
                 <thead class="thead-dark">
                 <tr>
@@ -117,7 +112,7 @@
             </table>
             </div>
 
-            <div>
+            <div class="col-lg-6">
             <table class="table table-striped">
                 <thead class="thead-dark">
                 <tr>

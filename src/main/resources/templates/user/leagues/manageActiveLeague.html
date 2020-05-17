@@ -24,18 +24,18 @@
             <div class="navbar-collapse collapse" id="navbarToggleExternalContent">
                 <ul class="navbar-nav mr-auto">
                     <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Leagues Base</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Leagues</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">Teams</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">Players</a>
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/competitionsBase}">Leagues Base</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/leagues/myLeagues}">Leagues</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/teams/myTeams}">Teams</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/players/myPlayers}">Players</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold ml-1" th:href="@{/admin/index}">Admin</a>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <form class="form-inline my-2 my-lg-0 mx-auto" action="#" th:action="@{/search}" method="GET">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" th:name="phrase">
                         <button class="btn btn-success my-2 my-sm-0 mx-auto" type="submit">Search</button>
                     </form>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/logout}">Log Out</a>
                 </ul>
             </div>
         </div>
@@ -45,45 +45,46 @@
 <br>
 
 <div class="container" align="center">
-    <h1 th:text="${league.name}" />
+    <h3 th:text="${league.name}" />
     <br>
 
-    <table class="table table-bordered table-striped" align="center" >
-        <thead class="thead-dark">
-        <tr align="center">
-            <th> # </th>
-            <th class="text-left"> Team Name </th>
-            <th> Played </th>
-            <th> Wins </th>
-            <th> Draws </th>
-            <th> Loses </th>
-            <th> Scored </th>
-            <th> Conceded </th>
-            <th> +/- </th>
-            <th> Points </th>
-        </tr>
-        </thead>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" align="center" >
+            <thead class="thead-dark">
+            <tr align="center">
+                <th> #</th>
+                <th class="text-left"> Team Name</th>
+                <th> Played</th>
+                <th class="d-none d-md-table-cell"> Wins</th>
+                <th class="d-none d-md-table-cell"> Draws</th>
+                <th class="d-none d-md-table-cell"> Loses</th>
+                <th class="d-none d-lg-table-cell"> Scored</th>
+                <th class="d-none d-lg-table-cell"> Conceded</th>
+                <th> +/-</th>
+                <th> Points</th>
+            </tr>
+            </thead>
 
-        <tbody>
-        <tr align="center" th:each="team: ${standings}" >
-            <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+." />
-            <td align="left" style="width: 400px;" th:text="${team.team.name}" />
-            <td style="width: 100px;" th:text="${team.getNumberOfMatches()}" />
-            <td style="width: 100px;" th:text="${team.wins}" />
-            <td style="width: 100px;" th:text="${team.draws}" />
-            <td style="width: 100px;" th:text="${team.loses}" />
-            <td style="width: 100px;" th:text="${team.scoredGoals}" />
-            <td style="width: 100px;" th:text="${team.concededGoals}" />
-            <td style="width: 100px;" th:text="${team.balance}" />
-            <td style="width: 100px;" th:text="${team.points}" />
-        </tr>
-        </tbody>
+            <tbody>
+            <tr align="center" th:each="team: ${standings}" >
+                <td style="width: 15px;" th:text="${standings.indexOf(team)+1}+." />
+                <td align="left" style="width: 400px;" th:text="${team.team.name}" />
+                <td style="width: 100px;" th:text="${team.getNumberOfMatches()}" />
+                <td class="d-none d-md-table-cell" style="width: 100px;" th:text="${team.wins}" />
+                <td class="d-none d-md-table-cell" style="width: 100px;" th:text="${team.draws}" />
+                <td class="d-none d-md-table-cell" style="width: 100px;" th:text="${team.loses}" />
+                <td class="d-none d-lg-table-cell" style="width: 100px;" th:text="${team.scoredGoals}" />
+                <td class="d-none d-lg-table-cell" style="width: 100px;" th:text="${team.concededGoals}" />
+                <td style="width: 100px;" th:text="${team.balance}" />
+                <td style="width: 100px;" th:text="${team.points}" />
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-    </table>
-
-    <div class="d-flex">
-        <div class="ml-3"><a class="btn btn-secondary p2" th:href="@{/user/leagues/myLeagues}">Back to Leagues Panel</a></div>
-        <div class="input-group ml-auto mr-5" style="width: 800px">
+    <div class="row">
+        <div class="mr-auto col-lg-3 mb-1"><a class="btn btn-secondary text-center" th:href="@{/user/leagues/myLeagues}">Back to Leagues Panel</a></div>
+        <div class="input-group mr-md-3 col-lg-9 mb-1 ml-auto" style="max-width: 650px">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon3">Share your league URL:</span>
             </div>
@@ -113,39 +114,43 @@
     </ul>
     <br>
 
-    <table>
-        <tbody>
-        <tr th:each="gameweek: ${league.gameweeks}" >
-            <td>
-            <table class="table table-striped">
-                <thead class="thead-dark">
-                <tr>
-                    <th colspan="2"/>
-                    <th colspan="5" class="text-center"  th:text="Gameweek+' '+${gameweek.number}" />
-                    <th colspan="1"/>
-                </tr>
-                </thead>
+    <div class="table-responsive">
+        <table class="table table-borderless" style="max-width: 900px">
+            <tbody>
+            <tr th:each="gameweek: ${league.gameweeks}" >
+                <td>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th colspan="2"/>
+                                <th colspan="5" class="text-center"  th:text="Gameweek+' '+${gameweek.number}" />
+                                <th colspan="1"/>
+                            </tr>
+                            </thead>
 
-                <tbody>
-                <tr th:each="match: ${gameweek.matches}" >
-                    <td class="align-middle" style="width: 75px;" align="left" th:text="${match.date}" />
-                    <td class="align-middle" style="width: 75px;" align="left" th:text="${match.time}" />
-                    <td class="align-middle" style="width: 250px;" align="right" th:text="${match.host.team.name}"  />
-                    <td class="align-middle" style="width: 30px;" align="center" th:text="${match.hostScore}" />
-                    <td class="align-middle" style="width: 10px;" align="center"> : </td>
-                    <td class="align-middle" style="width: 30px;" align="center" th:text="${match.guestScore}" />
-                    <td class="align-middle" style="width: 250px;" align="left" th:text="${match.guest.team.name}" />
-                    <td class="align-middle" style="width: 150px;" align="center">
-                        <a th:href="@{/user/matches/matchDetails(matchId=${match.id})}"
-                        class="btn btn-primary btn-sm" >Match Details</a></td>
-                </tr>
-                </tbody>
+                            <tbody>
+                            <tr th:each="match: ${gameweek.matches}" >
+                                <td class="align-middle" style="width: 75px;" align="left" th:text="${match.date}" />
+                                <td class="align-middle" style="width: 75px;" align="left" th:text="${match.time}" />
+                                <td class="align-middle" style="width: 250px;" align="right" th:text="${match.host.team.name}"  />
+                                <td class="align-middle" style="width: 30px;" align="center" th:text="${match.hostScore}" />
+                                <td class="align-middle" style="width: 10px;" align="center"> : </td>
+                                <td class="align-middle" style="width: 30px;" align="center" th:text="${match.guestScore}" />
+                                <td class="align-middle" style="width: 250px;" align="left" th:text="${match.guest.team.name}" />
+                                <td class="align-middle" style="width: 150px;" align="center">
+                                    <a th:href="@{/user/matches/matchDetails(matchId=${match.id})}"
+                                    class="btn btn-primary btn-sm" >Match Details</a></td>
+                            </tr>
+                            </tbody>
 
-            </table>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>

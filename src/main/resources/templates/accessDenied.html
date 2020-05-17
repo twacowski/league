@@ -24,13 +24,13 @@
             <div class="navbar-collapse collapse" id="navbarToggleExternalContent">
                 <ul class="navbar-nav mr-auto">
                     <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Leagues Base</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/competitionsBase}">Leagues Base</a>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Leagues</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">Teams</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">Players</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/leagues/myLeagues}">Leagues</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/teams/myTeams}">Teams</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/players/myPlayers}">Players</a>
                     </a>
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold ml-1" th:href="@{/admin/index}">Admin</a>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <form class="form-inline my-2 my-lg-0 mx-auto" action="#" th:action="@{/search}" method="GET">
@@ -38,11 +38,11 @@
                         <button class="btn btn-success my-2 my-sm-0 mx-auto" type="submit">Search</button>
                     </form>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/logout}">Log Out</a>
                     </a>
                     <a sec:authorize="!isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/login}">Log In</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/registration}">Sign up</a>
                     </a>
                 </ul>
             </div>
@@ -50,12 +50,14 @@
     </nav>
 </header>
 
-<div class="alert alert-danger" role="alert">
-    <h4 class="alert-heading">Forbidden page!</h4>
-    <p>Unfortunately you don't have permission to this content. In case of problems contact with administrator.</p>
-    <hr>
-    <p class="mb-0">You can safely back to main page.</p>
+<br>
+<div class="container">
+    <div class="alert alert-danger mx-1" role="alert">
+        <h4 class="alert-heading">Forbidden page!</h4>
+        <p>Unfortunately you don't have permission to this content. In case of problems contact with administrator.</p>
+        <hr>
+        <p class="mb-0">You can safely back to main page.</p>
+    </div>
 </div>
-
 </body>
 </html>

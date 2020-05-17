@@ -24,13 +24,13 @@
             <div class="navbar-collapse collapse" id="navbarToggleExternalContent">
                 <ul class="navbar-nav mr-auto">
                     <a class="btn btn-dark font-weight-bold" th:href="@{/}">Home</a>
-                    <a class="btn btn-dark font-weight-bold" th:href="@{/competitionsBase}">Leagues Base</a>
+                    <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/competitionsBase}">Leagues Base</a>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/leagues/myLeagues}">Leagues</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/teams/myTeams}">Teams</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/user/players/myPlayers}">Players</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/leagues/myLeagues}">Leagues</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/teams/myTeams}">Teams</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/user/players/myPlayers}">Players</a>
                     </a>
-                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold" th:href="@{/admin/index}">Admin Panel</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="btn btn-dark font-weight-bold ml-1" th:href="@{/admin/index}">Admin</a>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <form class="form-inline my-2 my-lg-0 mx-auto" action="#" th:action="@{/search}" method="GET">
@@ -38,11 +38,11 @@
                         <button class="btn btn-success my-2 my-sm-0 mx-auto" type="submit">Search</button>
                     </form>
                     <a sec:authorize="isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/logout}">Log Out</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/logout}">Log Out</a>
                     </a>
                     <a sec:authorize="!isAuthenticated()">
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/login}">Log In</a>
-                        <a class="btn btn-dark font-weight-bold" th:href="@{/registration}">Sign up</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/login}">Log In</a>
+                        <a class="btn btn-dark font-weight-bold ml-1" th:href="@{/registration}">Sign up</a>
                     </a>
                 </ul>
             </div>
@@ -51,8 +51,8 @@
 </header>
 
 <div class="container" align="center">
-
-    <h1 th:text="${league.name}" />
+    <br>
+    <h3 th:text="${league.name}" />
 
     <ul class="nav nav-tabs justify-content-center mt-3">
         <li class="nav-item">
@@ -73,22 +73,24 @@
     </ul>
     <br>
 
-    <table class="table table-striped" style="width: 890px">
-        <thead class="thead-dark">
-        <tr>
-            <th class="text-center"><img width="30" height="30" th:src="@{/images/ownGoal.png}"/></th>
-            <th colspan="2" class="text-center align-middle pr-5" ><h4 class="pr-5"> Own Goals Scorers</h4></th>
-        </tr>
-        </thead>
+    <div class="table-responsive">
+        <table class="table table-striped" style="max-width: 900px">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-center"><img width="30" height="30" th:src="@{/images/ownGoal.png}"/></th>
+                <th colspan="2" class="text-center align-middle pr-5" ><h4 class="pr-5"> Own Goals Scorers</h4></th>
+            </tr>
+            </thead>
 
-        <tbody>
-        <tr th:each="player: ${ownGoals}">
-            <td class="align-middle" style="width: 90px;" align="center" th:text="${player.ownGoals}"/>
-            <td class="align-middle" style="width: 450px;" align="left" th:text="${player.player.surname}+' '+${player.player.name}"/>
-            <td class="align-middle" style="width: 350px;" align="left" th:text="${player.player.team.name}"/>
-        </tr>
-        </tbody>
-    </table>
+            <tbody>
+            <tr th:each="player: ${ownGoals}">
+                <td class="align-middle" style="width: 90px;" align="center" th:text="${player.ownGoals}"/>
+                <td class="align-middle" style="width: 450px;" align="left" th:text="${player.player.surname}+' '+${player.player.name}"/>
+                <td class="align-middle" style="width: 350px;" align="left" th:text="${player.player.team.name}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>

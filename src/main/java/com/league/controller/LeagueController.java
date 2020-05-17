@@ -60,7 +60,7 @@ public class LeagueController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         League league = leagueService.findById(leagueId);
-        if (!league.getUser().getUserName().equals(auth.getName()) || league.getStatus() == Status.ARCHIVED) {
+        if (!leagueService.isOwner(leagueId)) {
             return "accessDenied";
         }
 
@@ -84,6 +84,11 @@ public class LeagueController {
     @GetMapping("deleteLeague")
     public String deleteLeagueProceed(@RequestParam("leagueId") int leagueId) {
         League league = leagueService.findById(leagueId);
+
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
+
         if (league.getStatus() == Status.ARCHIVED || league.getStatus() == Status.ACTIVE) {
             return "redirect:/user/leagues/myLeagues";
         }
@@ -93,6 +98,11 @@ public class LeagueController {
 
     @GetMapping("openRegistration")
     public String openRegistration(@RequestParam("leagueId") int leagueId) {
+
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
+
         leagueService.openRegistration(leagueId);
         return "redirect:/user/leagues/myLeagues";
     }
@@ -150,6 +160,9 @@ public class LeagueController {
 
     @GetMapping("manageActiveLeague")
     public String manageActiveTable(@RequestParam("leagueId") int leagueId, Model model) {
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
         League league = leagueService.findById(leagueId);
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
@@ -158,6 +171,9 @@ public class LeagueController {
 
     @GetMapping("topScorers")
     public String topScorers(@RequestParam("leagueId") int leagueId, Model model) {
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
         League league = leagueService.findById(leagueId);
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
@@ -167,6 +183,9 @@ public class LeagueController {
 
     @GetMapping("ownGoals")
     public String ownGoals(@RequestParam("leagueId") int leagueId, Model model) {
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
         League league = leagueService.findById(leagueId);
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
@@ -176,6 +195,9 @@ public class LeagueController {
 
     @GetMapping("yellowCards")
     public String yellowCards(@RequestParam("leagueId") int leagueId, Model model) {
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
         League league = leagueService.findById(leagueId);
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
@@ -185,6 +207,9 @@ public class LeagueController {
 
     @GetMapping("redCards")
     public String redCards(@RequestParam("leagueId") int leagueId, Model model) {
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
         League league = leagueService.findById(leagueId);
         model.addAttribute("league", league);
         model.addAttribute("standings", leagueService.getStandings(league));
@@ -194,6 +219,9 @@ public class LeagueController {
 
     @GetMapping("toArchieve")
     public String toArchieve(@RequestParam("leagueId") int leagueId) {
+        if (!leagueService.isOwner(leagueId)) {
+            return "accessDenied";
+        }
         leagueService.toArchieve(leagueId);
         return "redirect:/user/leagues/myLeagues";
     }
