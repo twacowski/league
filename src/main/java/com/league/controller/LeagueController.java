@@ -3,23 +3,34 @@ package com.league.controller;
 import com.league.model.League;
 import com.league.model.Participation;
 import com.league.model.Team;
+import com.league.model.Voivodeship;
 import com.league.model.enums.Status;
 import com.league.service.league.LeagueService;
 import com.league.service.location.LocationService;
 import com.league.service.player.PlayerService;
 import com.league.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 @RequestMapping("user/leagues")
 public class LeagueController {
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
 
     @Autowired
     LeagueService leagueService;
@@ -49,7 +60,12 @@ public class LeagueController {
     }
 
     @PostMapping("addLeagueProceed")
-    public String addTeamLeague(@ModelAttribute("league") League league) {
+    public String addTeamLeague(@Valid @ModelAttribute("league") League league, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return "user/leagues/addLeague";
+        }
+
         league.setStatus(Status.INACTIVE);
         leagueService.saveLeague(league);
         return "redirect:/user/leagues/myLeagues";
@@ -76,7 +92,12 @@ public class LeagueController {
     }
 
     @PostMapping("manageLeagueProceed")
-    public String manageLeagueProceed(@ModelAttribute("league") League league) {
+    public String manageLeagueProceed(@Valid @ModelAttribute("league") League league, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return "user/leagues/manageLeague";
+        }
+
         leagueService.saveLeague(league);
         return "redirect:/user/leagues/myLeagues";
     }

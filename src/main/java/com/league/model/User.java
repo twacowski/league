@@ -1,18 +1,31 @@
 package com.league.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @NotNull(message="This field is required")
+    @Size(min=3, message="Username must have at least 3 letters")
     private String userName;
+
+    @NotNull(message="This field is required")
+    @Size(min=3, message="Your password must have at least 3 letters")
     private String password;
     private boolean active;
     private String roles;
+
+    @NotNull(message="This field is required")
+    @Email(message = "Email should be valid")
     private String email;
     private String name;
     private String lastName;

@@ -10,16 +10,27 @@ import com.league.service.player.PlayerService;
 import com.league.service.team.TeamService;
 import com.league.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/")
 public class IndexController {
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
 
     @Autowired
     UserService userService;
@@ -58,7 +69,11 @@ public class IndexController {
     }
 
     @PostMapping("/registrationProceed")
-    public String registrationProceed(@ModelAttribute("user") User user) {
+    public String registrationProceed(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return "registration";
+        }
 
         userService.addUser(user);
 

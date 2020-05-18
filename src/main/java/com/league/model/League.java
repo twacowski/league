@@ -4,6 +4,8 @@ import com.league.model.enums.CompetitionType;
 import com.league.model.enums.Status;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,9 @@ public class League {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @NotNull(message="This field is required")
+    @Size(min=3, message="Name must have at least 3 letters")
     private String name;
     private boolean isStarted;
     private boolean rematch;
