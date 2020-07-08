@@ -124,8 +124,7 @@
 
                             <tbody>
                             <tr th:each="match: ${gameweek.matches}">
-                                <td class="align-middle" style="width: 75px;" align="left" th:text="${match.date}"/>
-                                <td class="align-middle" style="width: 75px;" align="left" th:text="${match.time}"/>
+                                <td class="align-middle" style="width: 170px;" align="left" th:text="${match.getDate()}"/>
                                 <td class="align-middle" style="width: 250px;" align="right" th:text="${match.host.team.name}"/>
                                 <td class="align-middle" style="width: 30px;" align="center" th:text="${match.hostScore}"/>
                                 <td class="align-middle" style="width: 10px;" align="center"> :</td>

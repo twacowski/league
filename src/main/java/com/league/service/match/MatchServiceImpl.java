@@ -28,6 +28,9 @@ public class MatchServiceImpl implements MatchService {
         theMatch.setHostScore(match.getHostScore());
         theMatch.setGuestScore(match.getGuestScore());
         theMatch.setScoreSheets(match.getScoreSheets());
+        theMatch.setStartDate(match.getStartDate());
+        theMatch.setPitch(match.getPitch());
+
         if(theMatch.getHostScore() != null && theMatch.getGuestScore() != null) {
             theMatch.setPlayed(true);
         } else {

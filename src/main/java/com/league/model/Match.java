@@ -1,7 +1,10 @@
 package com.league.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +48,10 @@ public class Match {
 
     private Integer hostScore;
     private Integer guestScore;
-    private Date date;
-    private String time;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime startDate;
+
     private String pitch;
     private boolean isPlayed;
 
@@ -126,20 +131,24 @@ public class Match {
         this.guestScore = guestScore;
     }
 
-    public Date getDate() {
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getDate() {
+        if(this.startDate == null) {
+            return null;
+        }
+        String date ="";
+        date += String.format("%02d", this.startDate.getDayOfMonth()) + "/"
+                + String.format("%02d", this.startDate.getMonthValue()) + "/"
+                + this.startDate.getYear() + " \n ";
+        date += String.format("%02d", this.startDate.getHour()) + ":" + String.format("%02d", this.startDate.getMinute());
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public String getPitch() {

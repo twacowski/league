@@ -3,6 +3,7 @@ package com.league.controller;
 import com.league.model.Match;
 import com.league.service.league.LeagueService;
 import com.league.service.match.MatchService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("user/matches")
+@Slf4j
 public class MatchController {
 
     @Autowired

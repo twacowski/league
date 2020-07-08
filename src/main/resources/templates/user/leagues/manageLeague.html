@@ -194,7 +194,7 @@
                 </tbody>
             </table>
             <div class="align-middle font-italic" align="center">
-                <span th:if="${league.participationList.size()}==0">No results</span>
+                <span th:if="${league.participationList == null}">No results</span>
             </div>
         </div>
     </div>
@@ -230,7 +230,7 @@
             </tbody>
         </table>
         <div class="align-middle font-italic" align="center">
-            <span th:if="${league.participationList.isEmpty()}">No results</span>
+            <span th:if="${league.participationList == null}">No results</span>
         </div>
     </div>
 </div>

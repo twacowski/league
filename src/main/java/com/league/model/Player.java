@@ -1,6 +1,8 @@
 package com.league.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -11,7 +13,12 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull(message="This field is required")
+    @Size(min=2, message="Name must have at least 2 letters")
     private String name;
+
+    @NotNull(message="This field is required")
+    @Size(min=2, message="Surname must have at least 2 letters")
     private String surname;
     private int number;
     private int goals;
@@ -39,6 +46,14 @@ public class Player {
 
 
     public Player() {
+        this.number = 0;
+        this.goals = 0;
+        this.yellowCards = 0;
+        this.redCards = 0;
+    }
+
+    public Player(User user) {
+        this.user = user;
         this.number = 0;
         this.goals = 0;
         this.yellowCards = 0;

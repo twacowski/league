@@ -57,6 +57,11 @@
                     <input class="form-control px-2" type="text" th:field="*{name}" placeholder="Team name">
                 </div>
             </div>
+            <div class="form-group row">
+                <div class="col-sm-9 ml-auto">
+                    <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</p>
+                </div>
+            </div>
 
             <div class="d-flex">
                 <a  class="btn btn-secondary my-1" th:href="@{/user/teams/myTeams}">back to My Teams</a>
@@ -119,7 +124,7 @@
                     <td class="align-middle d-none d-lg-table-cell" align="center" th:text="${team.concededGoals}" />
                     <td/>
                 </tr>
-                <span th:if="${team.getParticipationList().isEmpty()}">
+                <span th:if="${team.getParticipationList() == null}">
                     <tr>
                         <td align="center" colspan="9">No Competitions. Find some for your team!</td>
                     </tr>
@@ -152,7 +157,7 @@
             </thead>
 
             <tbody>
-            <tr th:each="player: ${players}">
+            <tr th:each="player: ${team.players}">
                 <td class="align-middle d-none d-md-table-cell" align="center" style="width: 85px" th:text="${player.number}" />
                 <td class="align-middle" th:text="${player.surname}" />
                 <td class="align-middle" th:text="${player.name}" />

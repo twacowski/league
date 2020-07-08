@@ -62,7 +62,8 @@
                     </div>
 
                     <div class="mx-auto px-1 col-md text-center" style="max-width: 100px">
-                        <h4 th:text="${match.hostScore} + ' : ' + ${match.guestScore}"/>
+                        <span th:if="${match.hostScore == null || match.guestScore == null}"><h4>- : -</h4></span>
+                        <span th:unless="${match.hostScore == null || match.guestScore == null}"><h4 th:text="${match.hostScore} + ' : ' + ${match.guestScore}"/></span>
                     </div>
 
                     <div class="mx-lg-4 col-md text-center" align="center" >
@@ -70,9 +71,8 @@
                     </div>
                 </div>
             </div>
-            <!--<input type="date" th:field="*{date}" >
-            <input th:type="text" th:field="*{time}" placeholder="place">-->
-            <p style="width: 300px;"  th:text="${match.pitch}">
+            <p style="width: 300px;"  th:text="${match.getDate()}"/>
+            <p style="width: 300px;"  th:text="${match.pitch}"/>
             <br>
         </div>
 
@@ -142,12 +142,6 @@
 
     </form>
 </div>
-
-<!--<div class="pd-1 bg-dark text-white navbar fixed-bottom" style="height: 40px;">
-    <div class="container d-flex justify-content-center" >
-        Create your own league!
-    </div>
-</div>-->
 
 </body>
 
